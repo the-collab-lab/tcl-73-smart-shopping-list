@@ -7,6 +7,7 @@ Add yourself as a contributor to this project as a Markdown link that links your
 ## Cohort Participants
 
     - [Jose Aguilar](https://github.com/jaguilar89) 🚀
+    - [Rachel Spencer](https://github.com/rachelspencer) 💃
 
 ## Mentors
 
