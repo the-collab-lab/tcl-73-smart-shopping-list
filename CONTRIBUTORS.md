@@ -9,7 +9,9 @@ Add yourself as a contributor to this project as a Markdown link that links your
     - [Jose Aguilar](https://github.com/jaguilar89) 🚀
 
 ## Mentors
+
     - [Tim Taylor](https://github.com/timothy-taylor) 🔭
-    - [Christina Woodhams] (https://github.com/polly89) 💃 
+    - [Christina Woodhams] (https://github.com/polly89) 💃
+    [Belinda Black](https://github.com/belindablack) 💙
 
 ## Code of Conduct Contacts
