@@ -10,5 +10,6 @@ Add yourself as a contributor to this project as a Markdown link that links your
 
 ## Mentors
     - [Tim Taylor](https://github.com/timothy-taylor) 🔭
+    - [Christina Woodhams] (https://github.com/polly89) 💃 
 
 ## Code of Conduct Contacts
