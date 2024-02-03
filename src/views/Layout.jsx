@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 import './Layout.css';
 import { auth } from '../api/config.js';
+import { SignInButton, SignOutButton, useAuth } from '../api/useAuth.jsx';
 
 /**
  * TODO: The links defined in this file don't work!
@@ -12,11 +13,14 @@ import { auth } from '../api/config.js';
  */
 
 export function Layout() {
+	const { user } = useAuth();
+
 	return (
 		<>
 			<div className="Layout">
 				<header className="Layout-header">
 					<h1>Smart shopping list</h1>
+					{!!user ? <SignOutButton /> : <SignInButton />}
 				</header>
 				<main className="Layout-main">
 					<Outlet />
