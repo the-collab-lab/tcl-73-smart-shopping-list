@@ -9,6 +9,7 @@ Add yourself as a contributor to this project as a Markdown link that links your
     - [Jose Aguilar](https://github.com/jaguilar89) 🚀
     - [Rachel Spencer](https://github.com/rachelspencer) 💃
     - [Paige Carroll](https://github.com/sillytsundere) ✨
+    - [Iryna Trush](https://github.com/trushmi) 🚀
 
 ## Mentors
 
