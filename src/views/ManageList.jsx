@@ -77,9 +77,6 @@ export function ManageList({ listPath }) {
 				</div>
 				<button type="submit">Submit</button>
 			</form>
-			{/* <aside>
-				<p>{taskMessage}</p>
-			</aside> */}
 		</div>
 	);
 }
