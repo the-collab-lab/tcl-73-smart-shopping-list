@@ -43,18 +43,16 @@ export function Home({ data, setListPath }) {
 			<p>
 				Hello from the home (<code>/</code>) page!
 			</p>
-			<form onSubmit={handleSubmit}>
-				<label htmlFor="list-name">
-					Enter a new list name:
-					<input
-						type="text"
-						name="list-name"
-						id="list-name"
-						value={listName}
-						onChange={handleInputChange}
-						required
-					/>
-				</label>
+			<form id="item-form" onSubmit={handleSubmit}>
+				<label htmlFor="list-name"> Enter a new list name: </label>
+				<input
+					type="text"
+					name="list-name"
+					id="list-name"
+					value={listName}
+					onChange={handleInputChange}
+					required
+				/>
 				<button type="submit">Create a list</button>
 			</form>
 			<ul>
