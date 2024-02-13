@@ -1,6 +1,7 @@
 import './Home.css';
 import { SingleList } from '../components/SingleList';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { createList } from '../api/firebase.js';
 import { useAuth } from '../api';
 
@@ -10,26 +11,33 @@ export function Home({ data, setListPath }) {
 	const userId = user?.uid;
 	const userEmail = user?.email;
 	localStorage.setItem('token', token);
+	const navigate = useNavigate();
 
 	const [listName, setListName] = useState('');
-	const [listData, setListData] = useState(data);
-	console.log('data from 1', data);
 
 	const handleInputChange = (event) => {
 		setListName(event.target.value);
 	};
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
 		if (!listName) {
 			alert('Oppsss, you have to provide a name');
 		} else {
-			const result = createList(userId, userEmail, listName);
-			setListData(...listData, result);
+			await createList(userId, userEmail, listName);
 			alert(`New list was created named: ${listName}`);
 		}
-		setListName('');
 	};
+
+	useEffect(() => {
+		const newList = data.find((list) => list.name === listName);
+
+		if (newList) {
+			const currentlistPath = newList.path;
+			setListPath(currentlistPath);
+			navigate('/list');
+		}
+	}, [listName, setListPath, navigate, data]);
 
 	return (
 		<div className="Home">
