@@ -10,6 +10,9 @@ export function Home({ data, setListPath }) {
 	const token = user?.accessToken;
 	const userId = user?.uid;
 	const userEmail = user?.email;
+
+	// Do we need to really store it
+
 	localStorage.setItem('token', token);
 	const navigate = useNavigate();
 
@@ -21,12 +24,8 @@ export function Home({ data, setListPath }) {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		if (!listName) {
-			alert('Oppsss, you have to provide a name');
-		} else {
-			await createList(userId, userEmail, listName);
-			alert(`New list was created named: ${listName}`);
-		}
+		await createList(userId, userEmail, listName);
+		alert(`New list was created named: ${listName}`);
 	};
 
 	useEffect(() => {
@@ -46,13 +45,14 @@ export function Home({ data, setListPath }) {
 			</p>
 			<form onSubmit={handleSubmit}>
 				<label htmlFor="list-name">
-					Enter your list name:
+					Enter a new list name:
 					<input
 						type="text"
 						name="list-name"
 						id="list-name"
 						value={listName}
 						onChange={handleInputChange}
+						required
 					/>
 				</label>
 				<button type="submit">Create a list</button>
