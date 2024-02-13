@@ -38,6 +38,8 @@ export function ManageList({ listPath }) {
 						onChange={handleChangeItem}
 						name="itemName"
 						type="text"
+						id="item"
+						required
 					/>
 				</div>
 
@@ -47,12 +49,14 @@ export function ManageList({ listPath }) {
 					</label>
 					<ul>
 						<li>
-							<label htmlFor="soon"> Soon (7 days) </label>
+							<label htmlFor="soon"> Soon (7 days)</label>
 							<input
 								value={7}
 								onChange={handleChangeDate}
 								name="daysUntilNextPurchase"
 								type="radio"
+								id="soon"
+								required
 							/>
 						</li>
 						<li>
@@ -62,6 +66,8 @@ export function ManageList({ listPath }) {
 								onChange={handleChangeDate}
 								name="daysUntilNextPurchase"
 								type="radio"
+								id="kind-of-soon"
+								required
 							/>
 						</li>
 						<li>
@@ -71,6 +77,8 @@ export function ManageList({ listPath }) {
 								onChange={handleChangeDate}
 								name="daysUntilNextPurchase"
 								type="radio"
+								id="not-soon"
+								required
 							/>
 						</li>
 					</ul>
