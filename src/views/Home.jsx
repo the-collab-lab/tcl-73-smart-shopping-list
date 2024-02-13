@@ -1,9 +1,19 @@
 import './Home.css';
 import { SingleList } from '../components/SingleList';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createList } from '../api/firebase.js';
+import { useAuth } from '../api';
 
 export function Home({ data, setListPath }) {
+	const { user } = useAuth();
+	const token = user?.accessToken;
+	const userId = user?.uid;
+	const userEmail = user?.email;
+	localStorage.setItem('token', token);
+
 	const [listName, setListName] = useState('');
+	const [listData, setListData] = useState(data);
+	console.log('data from 1', data);
 
 	const handleInputChange = (event) => {
 		setListName(event.target.value);
@@ -14,6 +24,8 @@ export function Home({ data, setListPath }) {
 		if (!listName) {
 			alert('Oppsss, you have to provide a name');
 		} else {
+			const result = createList(userId, userEmail, listName);
+			setListData(...listData, result);
 			alert(`New list was created named: ${listName}`);
 		}
 		setListName('');
