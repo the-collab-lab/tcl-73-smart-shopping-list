@@ -7,13 +7,8 @@ import { useAuth } from '../api';
 
 export function Home({ data, setListPath }) {
 	const { user } = useAuth();
-	const token = user?.accessToken;
 	const userId = user?.uid;
 	const userEmail = user?.email;
-
-	// Do we need to really store it
-
-	localStorage.setItem('token', token);
 	const navigate = useNavigate();
 
 	const [listName, setListName] = useState('');
@@ -24,19 +19,24 @@ export function Home({ data, setListPath }) {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		await createList(userId, userEmail, listName);
-		alert(`New list was created named: ${listName}`);
+		if (listName) {
+			await createList(userId, userEmail, listName);
+			alert(`New list was created named: ${listName}`);
+		} else {
+			alert("Error occurred. List wasn't created");
+		}
 	};
 
-	useEffect(() => {
-		const newList = data.find((list) => list.name === listName);
+	const newList = data.find((list) => list.name === listName);
 
+	useEffect(() => {
 		if (newList) {
 			const currentlistPath = newList.path;
 			setListPath(currentlistPath);
+			setListName('');
 			navigate('/list');
 		}
-	}, [listName, setListPath, navigate, data]);
+	}, [setListPath, navigate, newList]);
 
 	return (
 		<div className="Home">
@@ -44,7 +44,7 @@ export function Home({ data, setListPath }) {
 				Hello from the home (<code>/</code>) page!
 			</p>
 			<form id="item-form" onSubmit={handleSubmit}>
-				<label htmlFor="list-name"> Enter a new list name: </label>
+				<label htmlFor="list-name">Enter a new list name:</label>
 				<input
 					type="text"
 					name="list-name"
