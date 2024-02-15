@@ -1,46 +1,34 @@
-import { useState } from 'react';
 import { addItem } from '../api/firebase';
 
 export function ManageList({ listPath }) {
-	const [itemName, setItemName] = useState('');
-	const [daysUntilNextPurchase, setDaysUntilNextPurchase] = useState(0);
-
-	const handleChangeItem = (e) => {
-		setItemName(e.target.value);
-	};
-
-	const handleChangeDate = (e) => {
-		setDaysUntilNextPurchase(parseInt(e.target.value));
-	};
-
-	const handleSubmit = async (e) => {
+	async function handleSubmit(e) {
 		e.preventDefault();
+
+		const formData = new FormData(e.target);
+		const itemName = formData.get('itemName');
+		const daysUntilNextPurchase = parseInt(
+			formData.get('daysUntilNextPurchase'),
+		);
+
 		try {
-			const newItem = await addItem(listPath, {
+			await addItem(listPath, {
 				itemName,
 				daysUntilNextPurchase,
 			});
-			alert('Item saved successfully.');
+
+			alert('Item saved successfully');
 		} catch (error) {
-			alert('Item not saved successfully.');
+			alert('There was a problem');
 		}
-		setItemName('');
 		document.getElementById('item-form').reset();
-	};
+	}
 
 	return (
 		<div>
 			<form id="item-form" onSubmit={handleSubmit}>
 				<div>
 					<label htmlFor="item">Item Name</label>
-					<input
-						value={itemName}
-						onChange={handleChangeItem}
-						name="itemName"
-						type="text"
-						id="item"
-						required
-					/>
+					<input name="itemName" type="text" id="item" required />
 				</div>
 
 				<div>
@@ -52,7 +40,6 @@ export function ManageList({ listPath }) {
 							<label htmlFor="soon"> Soon (7 days)</label>
 							<input
 								value={7}
-								onChange={handleChangeDate}
 								name="daysUntilNextPurchase"
 								type="radio"
 								id="soon"
@@ -63,7 +50,6 @@ export function ManageList({ listPath }) {
 							<label htmlFor="kind-of-soon"> Kind of Soon (14 days)</label>
 							<input
 								value={14}
-								onChange={handleChangeDate}
 								name="daysUntilNextPurchase"
 								type="radio"
 								id="kind-of-soon"
@@ -74,7 +60,6 @@ export function ManageList({ listPath }) {
 							<label htmlFor="not-soon"> Not Soon (30 days)</label>
 							<input
 								value={30}
-								onChange={handleChangeDate}
 								name="daysUntilNextPurchase"
 								type="radio"
 								id="not-soon"
