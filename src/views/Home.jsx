@@ -20,8 +20,8 @@ export function Home({ data, setListPath }) {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		if (listName) {
-			const path = await createList(userId, userEmail, listName);
-			setListPath(path);
+			const listItem = await createList(userId, userEmail, listName);
+			setListPath(listItem.path);
 			setListName('');
 			navigate('/list');
 			alert(`New list was created named: ${listName}`);
