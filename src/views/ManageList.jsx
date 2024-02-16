@@ -2,7 +2,7 @@ import { addItem } from '../api/firebase';
 import { useRef } from 'react';
 
 export function ManageList({ listPath }) {
-	const formRef = useRef();
+	const formRef = useRef(null);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -20,11 +20,10 @@ export function ManageList({ listPath }) {
 			});
 
 			alert('Item saved successfully');
+			formRef.current.reset();
 		} catch (error) {
-			alert('There was a problem');
+			alert(`There was a problem: ${error.message}`);
 		}
-
-		formRef.current.reset();
 	};
 
 	return (
