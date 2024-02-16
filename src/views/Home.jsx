@@ -19,12 +19,13 @@ export function Home({ data, setListPath }) {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		if (listName) {
-			const listItem = await createList(userId, userEmail, listName);
+		const trimmedListName = listName.trim();
+		if (trimmedListName) {
+			const listItem = await createList(userId, userEmail, trimmedListName);
 			setListPath(listItem.path);
 			setListName('');
 			navigate('/list');
-			alert(`New list was created named: ${listName}`);
+			alert(`New list was created named: ${trimmedListName}`);
 		} else {
 			alert("Error occurred. List wasn't created");
 		}
