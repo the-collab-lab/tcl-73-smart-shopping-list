@@ -1,6 +1,6 @@
 import './Home.css';
 import { SingleList } from '../components/SingleList';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createList } from '../api/firebase.js';
 import { useAuth } from '../api';
@@ -20,23 +20,15 @@ export function Home({ data, setListPath }) {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		if (listName) {
-			await createList(userId, userEmail, listName);
+			const path = await createList(userId, userEmail, listName);
+			setListPath(path);
+			setListName('');
+			navigate('/list');
 			alert(`New list was created named: ${listName}`);
 		} else {
 			alert("Error occurred. List wasn't created");
 		}
 	};
-
-	const newList = data.find((list) => list.name === listName);
-
-	useEffect(() => {
-		if (newList) {
-			const currentlistPath = newList.path;
-			setListPath(currentlistPath);
-			setListName('');
-			navigate('/list');
-		}
-	}, [setListPath, navigate, newList]);
 
 	return (
 		<div className="Home">
