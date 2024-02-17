@@ -115,6 +115,8 @@ export async function addUserToDatabase(user) {
  * @param {string} userId The id of the user who owns the list.
  * @param {string} userEmail The email of the user who owns the list.
  * @param {string} listName The name of the new list.
+ *
+ * @returns {Promise<Object>} created list object
  */
 export async function createList(userId, userEmail, listName) {
 	const listDocRef = doc(db, userId, listName);
@@ -125,9 +127,11 @@ export async function createList(userId, userEmail, listName) {
 
 	const userDocumentRef = doc(db, 'users', userEmail);
 
-	updateDoc(userDocumentRef, {
+	await updateDoc(userDocumentRef, {
 		sharedLists: arrayUnion(listDocRef),
 	});
+
+	return listDocRef;
 }
 
 /**
