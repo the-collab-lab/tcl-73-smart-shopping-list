@@ -128,7 +128,6 @@ function ShareList({ listPath }) {
 					id="shareForm"
 					type="text"
 					value={recipientEmail}
-					// required
 					onChange={handleChange}
 				/>
 				<p>{emailValidator}</p>
