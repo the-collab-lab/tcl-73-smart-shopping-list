@@ -1,7 +1,8 @@
-import { addItem } from '../api/firebase';
-import { useRef } from 'react';
+import { addItem, shareList } from '../api/firebase';
+import { useRef, useState } from 'react';
+import { useAuth } from '../api';
 
-export function ManageList({ listPath }) {
+function AddItem({ listPath }) {
 	const formRef = useRef(null);
 
 	const handleSubmit = async (e) => {
@@ -75,5 +76,48 @@ export function ManageList({ listPath }) {
 			</div>
 			<button type="submit">Submit</button>
 		</form>
+	);
+}
+
+function ShareList({ listPath }) {
+	const [recipientEmail, setRecipientEmail] = useState('');
+	const { user } = useAuth();
+	const currentUserId = user?.uid;
+	console.log(currentUserId);
+
+	const handleChange = (e) => {
+		setRecipientEmail(e.target.value);
+		console.log(recipientEmail);
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		await shareList(listPath, currentUserId, recipientEmail);
+	};
+
+	return (
+		<form id="shareListForm" onSubmit={handleSubmit}>
+			<div>
+				<p>You can share this shopping list with existing users!</p>
+				<label htmlFor="shareForm">Enter recipient's email:</label>
+				<input
+					id="shareForm"
+					type="text"
+					value={recipientEmail}
+					required
+					onChange={handleChange}
+				/>
+			</div>
+			<button type="submit">Submit</button>
+		</form>
+	);
+}
+
+export function ManageList({ listPath }) {
+	return (
+		<div>
+			<AddItem listPath={listPath} />
+			<ShareList listPath={listPath} />
+		</div>
 	);
 }
