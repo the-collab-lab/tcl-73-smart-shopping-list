@@ -92,7 +92,13 @@ function ShareList({ listPath }) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		await shareList(listPath, currentUserId, recipientEmail);
+		try {
+			await shareList(listPath, currentUserId, recipientEmail);
+			alert('List was successfully shared!');
+			setRecipientEmail('');
+		} catch (error) {
+			alert(error);
+		}
 	};
 
 	return (
