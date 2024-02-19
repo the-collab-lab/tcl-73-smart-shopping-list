@@ -8,6 +8,10 @@ export function List({ data }) {
 		setSearchInput(e.target.value);
 	};
 
+	const filteredData = data.filter((item) => {
+		return item.name.includes(searchInput);
+	});
+
 	return (
 		<>
 			<p>
@@ -16,12 +20,13 @@ export function List({ data }) {
 			<label htmlFor="item-search">Search for an item:</label>
 			<input
 				id="item-search"
-				type="text"
+				type="search"
 				placeholder="Search item..."
 				onChange={handleChange}
+				value={searchInput}
 			/>
 			<ul>
-				{data.map((item, index) => (
+				{filteredData.map((item, index) => (
 					<ListItem name={item.name} key={index} />
 				))}
 			</ul>
