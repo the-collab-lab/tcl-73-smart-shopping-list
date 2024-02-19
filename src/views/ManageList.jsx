@@ -1,6 +1,7 @@
 import { addItem, shareList } from '../api/firebase';
 import { useRef, useState } from 'react';
 import { useAuth } from '../api';
+import { validateEmail } from '../utils/emailValidator.js';
 
 function AddItem({ listPath }) {
 	const formRef = useRef(null);
@@ -81,17 +82,34 @@ function AddItem({ listPath }) {
 
 function ShareList({ listPath }) {
 	const [recipientEmail, setRecipientEmail] = useState('');
+	const [emailValidator, setEmailValidator] = useState('');
+	const [isValid, setIsValid] = useState(false);
 	const { user } = useAuth();
 	const currentUserId = user?.uid;
 	console.log(currentUserId);
 
 	const handleChange = (e) => {
 		setRecipientEmail(e.target.value);
-		console.log(recipientEmail);
+
+		if (validateEmail(e.target.value)) {
+			setEmailValidator('');
+			setIsValid(true);
+		} else {
+			setEmailValidator('Email is not valid');
+		}
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		if (recipientEmail === '') {
+			return alert('Cannot submit without an email.');
+		}
+
+		if (!isValid) {
+			return alert('Cannot submit with an invalid email');
+		}
+
 		try {
 			await shareList(listPath, currentUserId, recipientEmail);
 			alert('List was successfully shared!');
@@ -110,9 +128,10 @@ function ShareList({ listPath }) {
 					id="shareForm"
 					type="text"
 					value={recipientEmail}
-					required
+					// required
 					onChange={handleChange}
 				/>
+				<p>{emailValidator}</p>
 			</div>
 			<button type="submit">Submit</button>
 		</form>
