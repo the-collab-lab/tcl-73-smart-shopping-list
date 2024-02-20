@@ -3,7 +3,7 @@ import { ListItem } from '../components';
 
 export function List({ data }) {
 	const [searchInput, setSearchInput] = useState('');
-
+	const msgToUser = 'There is no items in the list ';
 	const handleChange = (e) => {
 		setSearchInput(e.target.value);
 	};
@@ -17,6 +17,8 @@ export function List({ data }) {
 			<p>
 				Hello from the <code>/list</code> page!
 			</p>
+			{!data.length && <p> {msgToUser} </p>}
+
 			<label htmlFor="item-search">Search for an item:</label>
 			<input
 				id="item-search"
@@ -30,7 +32,9 @@ export function List({ data }) {
 				))}
 			</ul>
 
-			{!filteredData.length > 0 && <p>There are no matching items</p>}
+			{data.length && !filteredData.length > 0 && (
+				<p>There are no matching items</p>
+			)}
 		</>
 	);
 }
