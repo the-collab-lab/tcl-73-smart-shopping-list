@@ -8,7 +8,7 @@ export function List({ data }) {
 	};
 
 	const filteredData = data.filter((item) => {
-		return item.name.includes(searchInput);
+		return item.name.toLowerCase().includes(searchInput.toLowerCase());
 	});
 
 	return (
@@ -29,6 +29,7 @@ export function List({ data }) {
 					<ListItem name={item.name} key={index} />
 				))}
 			</ul>
+
 			{!data.length && <p>There are no items in this list.</p>}
 			{data.length > 0 && !filteredData.length > 0 && (
 				<p>There are no matching items</p>
