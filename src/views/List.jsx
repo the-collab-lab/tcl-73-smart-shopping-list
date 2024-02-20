@@ -23,13 +23,14 @@ export function List({ data }) {
 				type="search"
 				placeholder="Search item..."
 				onChange={handleChange}
-				value={searchInput}
 			/>
 			<ul>
 				{filteredData.map((item, index) => (
 					<ListItem name={item.name} key={index} />
 				))}
 			</ul>
+
+			{!filteredData.length > 0 && <p>There are no matching items</p>}
 		</>
 	);
 }
