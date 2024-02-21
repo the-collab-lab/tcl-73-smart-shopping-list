@@ -52,6 +52,7 @@ export function ShareList({ listPath }) {
 				required
 				onChange={handleChange}
 			/>
+			<p>{emailValidator}</p>
 			<button type="submit">Submit</button>
 		</form>
 	);
