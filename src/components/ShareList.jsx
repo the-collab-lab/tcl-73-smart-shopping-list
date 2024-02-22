@@ -17,7 +17,9 @@ export function ShareList({ listPath }) {
 			setEmailValidator('');
 			setIsValid(true);
 		} else {
-			setEmailValidator('Email is not valid');
+			setEmailValidator(
+				'Please enter a valid email, e.g., example@example.com.',
+			);
 		}
 	};
 
@@ -57,3 +59,41 @@ export function ShareList({ listPath }) {
 		</form>
 	);
 }
+
+// We want to further refactor our validators. Below is some code we would like to further refactor and impliment at a later date.
+
+// const handleChange = (e) => {
+//     setRecipientEmail(e.target.value);
+// if (hasSubmitted) {
+//   // user has submitted, so update validation on change
+//   const isValidEmail = validateEmail(e.target.value);
+//         setIsValid(isValidEmail);
+//         setEmailValidationMessage(isValidEmail ? '' : 'Please enter a valid email');
+// }
+// };
+// const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setHasSubmitted(true);
+// const isValidEmail = validateEmail(recipientEmail);
+//     if (!recipientEmail) {
+//         setIsValid(false);
+//         setEmailValidationMessage('Please enter a valid email');
+//         alert('Cannot submit without an email.');
+//         setHasSubmitted(false);
+//         return;
+//     }
+//     if (!isValidEmail) {
+//         setIsValid(false);
+//         setEmailValidationMessage('Please enter a valid email');
+//         alert('Cannot submit with an invalid email');
+//         return;
+//     }
+//     try {
+//         await shareList(listPath, currentUserId, recipientEmail);
+//         alert('List was successfully shared!');
+//         setRecipientEmail('');
+//         setHasSubmitted(false);
+//     } catch (error) {
+//         alert(error);
+//     }
+// };
