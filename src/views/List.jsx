@@ -2,22 +2,18 @@ import { useState } from 'react';
 import { ListItem } from '../components';
 
 export function List({ data }) {
-	const [searchInput, setSearchInput] = useState('');
+	const [searchItem, setSearchItem] = useState('');
 
 	const handleChange = (e) => {
-		setSearchInput(e.target.value);
+		setSearchItem(e.target.value);
 	};
 
 	const filteredItems = data.filter((item) => {
-		return item.name.toLowerCase().includes(searchInput.toLowerCase());
+		return item.name.toLowerCase().includes(searchItem.toLowerCase());
 	});
 
 	return (
 		<>
-			<p>
-				Hello from the <code>/list</code> page!
-			</p>
-
 			<label htmlFor="item-search"> Search for an item: </label>
 			<input
 				id="item-search"
