@@ -162,6 +162,8 @@ export async function shareList(listPath, currentUserId, recipientEmail) {
 		updateDoc(userDocumentRef, {
 			sharedLists: arrayUnion(listDocumentRef),
 		});
+
+		return { success: true, message: 'List shared successfully!' };
 	} catch (error) {
 		throw error;
 	}

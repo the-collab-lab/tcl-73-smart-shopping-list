@@ -35,9 +35,13 @@ export function ShareList({ listPath }) {
 		}
 
 		try {
-			await shareList(listPath, currentUserId, recipientEmail);
-			alert('List was successfully shared!');
-			setRecipientEmail('');
+			const result = await shareList(listPath, currentUserId, recipientEmail);
+			if (result.success) {
+				alert(result.message);
+				setRecipientEmail('');
+			} else {
+				alert('Failed to share the list.');
+			}
 		} catch (error) {
 			alert(error);
 		}
@@ -51,7 +55,6 @@ export function ShareList({ listPath }) {
 				id="shareEmail"
 				type="text"
 				value={recipientEmail}
-				required
 				onChange={handleChange}
 			/>
 			<p>{emailValidator}</p>
@@ -61,20 +64,37 @@ export function ShareList({ listPath }) {
 }
 
 // We want to further refactor our validators. Below is some code we would like to further refactor and impliment at a later date.
+// import { shareList } from '../api/firebase';
+// import { useState } from 'react';
+// import { useAuth } from '../api';
+// import { validateEmail } from '../utils/emailValidator.js';
+
+// export function ShareList({ listPath }) {
+// 	const [recipientEmail, setRecipientEmail] = useState('');
+// 	const [isValid, setIsValid] = useState(false);
+// 	const [emailValidationMessage, setEmailValidationMessage] = useState('');
+// 	const [hasSubmitted, setHasSubmitted] = useState(false);
+// 	const { user } = useAuth();
+// 	const currentUserId = user?.uid;
 
 // const handleChange = (e) => {
 //     setRecipientEmail(e.target.value);
-// if (hasSubmitted) {
-//   // user has submitted, so update validation on change
-//   const isValidEmail = validateEmail(e.target.value);
-//         setIsValid(isValidEmail);
-//         setEmailValidationMessage(isValidEmail ? '' : 'Please enter a valid email');
-// }
+
+// 	if (hasSubmitted) {
+// 	// user has submitted, so update validation on change
+// 	const isValidEmail = validateEmail(e.target.value);
+// 			setIsValid(isValidEmail);
+// 			setEmailValidationMessage(isValidEmail ? '' : 'Please enter a valid email');
+// 	}
 // };
+
 // const handleSubmit = async (e) => {
 //     e.preventDefault();
 //     setHasSubmitted(true);
-// const isValidEmail = validateEmail(recipientEmail);
+
+// 	const isValidEmail = validateEmail(recipientEmail);
+
+// 	// check for empty string
 //     if (!recipientEmail) {
 //         setIsValid(false);
 //         setEmailValidationMessage('Please enter a valid email');
@@ -82,6 +102,7 @@ export function ShareList({ listPath }) {
 //         setHasSubmitted(false);
 //         return;
 //     }
+// 	//check if email is not valid
 //     if (!isValidEmail) {
 //         setIsValid(false);
 //         setEmailValidationMessage('Please enter a valid email');
@@ -97,3 +118,18 @@ export function ShareList({ listPath }) {
 //         alert(error);
 //     }
 // };
+// return (
+// 			<form onSubmit={handleSubmit}>
+// 				<p>You can share this shopping list with existing users!</p>
+// 				<label htmlFor="shareEmail">Enter recipient's email:</label>
+// 				<input
+// 					id="shareEmail"
+// 					type="text"
+// 					value={recipientEmail}
+// 					onChange={handleChange}
+// 				/>
+// 				<p>{emailValidationMessage}</p>
+// 				<button type="submit">Submit</button>
+// 			</form>
+// 		);
+// 	}
