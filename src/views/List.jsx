@@ -17,10 +17,21 @@ export function List({ data }) {
 			<label htmlFor="item-search"> Search for an item: </label>
 			<input
 				id="item-search"
-				type="search"
+				type="text"
 				placeholder="Search item..."
 				onChange={handleChange}
+				value={searchItem}
 			/>
+			{searchItem && (
+				<button
+					type="button"
+					name="clearInput"
+					aria-label="Clear input"
+					onClick={() => setSearchItem('')}
+				>
+					X
+				</button>
+			)}
 			<ul>
 				{filteredItems.map((item, index) => (
 					<ListItem name={item.name} key={index} />
