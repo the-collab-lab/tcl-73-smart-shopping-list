@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ListItem } from '../components';
 
-export function List({ data }) {
+export function List({ listPath, data }) {
 	const [searchItem, setSearchItem] = useState('');
 
 	const handleChange = (e) => {
@@ -33,8 +33,13 @@ export function List({ data }) {
 				</button>
 			)}
 			<ul>
-				{filteredItems.map((item, index) => (
-					<ListItem name={item.name} key={index} />
+				{filteredItems.map((item) => (
+					<ListItem
+						listPath={listPath}
+						name={item.name}
+						key={item.id}
+						item={item}
+					/>
 				))}
 			</ul>
 
