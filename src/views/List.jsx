@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ListItem } from '../components';
+import { Link } from 'react-router-dom';
 
 export function List({ data }) {
 	const [searchItem, setSearchItem] = useState('');
@@ -38,7 +39,17 @@ export function List({ data }) {
 				))}
 			</ul>
 
-			{!data.length > 0 && <p>There are no items in this list.</p>}
+			{!data.length && (
+				<div>
+					<p>
+						There are no items in this list. Click this button to add your first
+						items
+					</p>
+					<Link to="/manage-list">
+						<button type="button"> Add items </button>
+					</Link>
+				</div>
+			)}
 
 			{data.length > 0 && !filteredItems.length > 0 && (
 				<p>There are no matching items.</p>
