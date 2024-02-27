@@ -7,8 +7,8 @@ export function ListItem({ listPath, item, name }) {
 	const [isChecked, setIsChecked] = useState(false);
 
 	function handleChange(e) {
-		// unsures checked box can be toggled
-		setIsChecked(!setIsChecked);
+		// ensures checked box can be toggled
+		setIsChecked(!isChecked);
 		// pass listPath, copies the item object and sets a new value named isChecked
 		updateItem(listPath, { ...item, isChecked: !isChecked });
 	}
