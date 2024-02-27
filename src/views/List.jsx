@@ -32,6 +32,8 @@ export function List({ listPath, data }) {
 					X
 				</button>
 			)}
+			<p>Mark your purchases, they will automatically uncheck after 24hrs.</p>
+			<p>You can uncheck if you no longer want to make the purchase.</p>
 			<ul>
 				{filteredItems.map((item) => (
 					<ListItem
