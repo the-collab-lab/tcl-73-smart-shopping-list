@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ListItem } from '../components';
+import { Link } from 'react-router-dom';
 
 export function List({ listPath, data }) {
 	const [searchItem, setSearchItem] = useState('');
@@ -14,41 +15,59 @@ export function List({ listPath, data }) {
 
 	return (
 		<>
-			<label htmlFor="item-search"> Search for an item: </label>
-			<input
-				id="item-search"
-				type="text"
-				placeholder="Search item..."
-				onChange={handleChange}
-				value={searchItem}
-			/>
-			{searchItem && (
-				<button
-					type="button"
-					name="clearInput"
-					aria-label="Clear input"
-					onClick={() => setSearchItem('')}
-				>
-					X
-				</button>
-			)}
-			<p>Mark your purchases, they will automatically uncheck after 24hrs.</p>
-			<p>You can uncheck if you no longer want to make the purchase.</p>
-			<ul>
-				{filteredItems.map((item) => (
-					<ListItem
-						listPath={listPath}
-						name={item.name}
-						key={item.id}
-						item={item}
+			{data.length > 0 ? (
+				<div>
+					<label htmlFor="item-search"> Search for an item: </label>
+					<input
+						id="item-search"
+						type="text"
+						placeholder="Search item..."
+						onChange={handleChange}
+						value={searchItem}
 					/>
-				))}
-			</ul>
+					{searchItem && (
+						<button
+							type="button"
+							name="clearInput"
+							aria-label="Clear input"
+							onClick={() => setSearchItem('')}
+						>
+							X
+						</button>
+					)}
 
-			{!data.length > 0 && <p>There are no items in this list.</p>}
-
-			{data.length > 0 && !filteredItems.length > 0 && (
-				<p>There are no matching items.</p>
+					<div>
+						<p>
+							Check off items as you shop, your list will reset after 24hrs.
+						</p>
+						<p>Only manually uncheck if you didn't make the purchase.</p>
+					</div>
+					<ul>
+						{filteredItems.map((item) => (
+							<ListItem
+								name={item.name}
+								key={item.id}
+								listPath={listPath}
+								item={item}
+							/>
+						))}
+					</ul>
+					{data.length > 0 && !filteredItems.length > 0 && (
+						<p>There are no matching items.</p>
+					)}
+				</div>
+			) : (
+				<div>
+					<label htmlFor="add-first-item">
+						There are no items in this list. Click this button to add your first
+						items!
+					</label>
+					<Link to="/manage-list">
+						<button id="add-first-item" type="button">
+							Add items
+						</button>
+					</Link>
+				</div>
 			)}
 		</>
 	);

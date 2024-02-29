@@ -6,7 +6,7 @@ import './ListItem.css';
 export function ListItem({ listPath, item, name }) {
 	const [isChecked, setIsChecked] = useState(false);
 
-	function handleChange(e) {
+	function handleChange() {
 		// ensures checked box can be toggled
 		setIsChecked(!isChecked);
 		// pass listPath, copies the item object and sets a new value named isChecked
@@ -17,17 +17,17 @@ export function ListItem({ listPath, item, name }) {
 	useEffect(() => {
 		//
 		if (item.dateLastPurchased) {
-			const now = new Date();
+			const currentDate = new Date();
+			const seconds = item.dateLastPurchased.seconds;
+			const nanoseconds = item.dateLastPurchased.nanoseconds;
 			// calculate expiration time by adding on 24 hours onto the value that is stored on the dateLastPurchased key
 			// this variable will be in milliseconds
-			const expirationTime =
-				new Date(
-					item.dateLastPurchased.seconds * 1000 +
-						Math.floor(item.dateLastPurchased.nanoseconds / 1000000),
-				).getTime() + ONE_DAY_IN_MILLISECONDS;
+			const expirationDate =
+				new Date(seconds * 1000 + Math.floor(nanoseconds / 1000000)).getTime() +
+				ONE_DAY_IN_MILLISECONDS;
 
 			// Set checkbox state will become unchecked when the current date matches the expiration time
-			setIsChecked(now.getTime() < expirationTime);
+			setIsChecked(currentDate.getTime() < expirationDate);
 		}
 	}, [item.dateLastPurchased]);
 
@@ -37,9 +37,9 @@ export function ListItem({ listPath, item, name }) {
 				checked={isChecked}
 				onChange={handleChange}
 				type="checkbox"
-				id="item-checkbox"
+				id={item.id}
 			/>
-			<label htmlFor="item-checkbox">{name}</label>
+			<label htmlFor={item.id}>{name}</label>
 		</li>
 	);
 }
