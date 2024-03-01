@@ -190,27 +190,13 @@ export async function addItem(listPath, { itemName, daysUntilNextPurchase }) {
 }
 
 export async function updateItem(listPath, item) {
-	// creates a reference to the item collection
 	const listCollectionRef = collection(db, listPath, 'items');
-	// creates a reference to current item by passing the item's id
 	const itemRef = doc(listCollectionRef, item.id);
 
-	// updating the item in the item's collection by passing it the itemRef
 	await updateDoc(itemRef, {
-		// creates a new key value pair named "isChecked" and sets it with the isChecked state value
 		isChecked: item.isChecked,
-		// updates the "dateLastPurchased" key
-		// checks if "isChecked" key is true, if so sets a new date
-		// if false, sets the value to null
-		// this ternary allows the "dateLastPurchased" key to be reset if the user unchecks an item themselves, therefore
-		// allows us to remove the timeStamp that may have accidently been placed there
 		dateLastPurchased: item.isChecked ? new Date() : null,
-		// updates the "dateLastPurchased" key
-		// checks if "isChecked" key is true, if so increments totalPurchases by 1
-		// is if "isChecked" key is false, if so decreases totalPurchases by 1
-		// this ternary allows our totalPurchases to be accurate is a user accidently checks an item.
-		// ** we assume unchecking an item is because a user accindently checked it,
-		// because the items all auto uncheck after 24hrs as that the nature of the app **
+
 		totalPurchases: item.isChecked
 			? item.totalPurchases + 1
 			: item.totalPurchases - 1,
