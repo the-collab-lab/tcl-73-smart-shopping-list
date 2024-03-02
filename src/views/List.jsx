@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ListItem } from '../components';
+import { Link } from 'react-router-dom';
 
 export function List({ listPath, data }) {
 	const [searchItem, setSearchItem] = useState('');
@@ -12,8 +13,21 @@ export function List({ listPath, data }) {
 		return item.name.toLowerCase().includes(searchItem.toLowerCase());
 	});
 
+	if (!data.length) {
+		return (
+			<div>
+				<label htmlFor="add-first-item">
+					There are no items in this list. Click this button to add your first
+					items!
+				</label>
+				<Link id="add-first-item" to="/manage-list">
+					Add items
+				</Link>
+			</div>
+		);
+	}
 	return (
-		<>
+		<div>
 			<label htmlFor="item-search"> Search for an item: </label>
 			<input
 				id="item-search"
@@ -44,12 +58,9 @@ export function List({ listPath, data }) {
 					/>
 				))}
 			</ul>
-
-			{!data.length > 0 && <p>There are no items in this list.</p>}
-
 			{data.length > 0 && !filteredItems.length > 0 && (
 				<p>There are no matching items.</p>
 			)}
-		</>
+		</div>
 	);
 }
