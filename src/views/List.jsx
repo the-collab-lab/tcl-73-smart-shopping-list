@@ -20,10 +20,8 @@ export function List({ data }) {
 					There are no items in this list. Click this button to add your first
 					items!
 				</label>
-				<Link to="/manage-list">
-					<button id="add-first-item" type="button">
-						Add items
-					</button>
+				<Link id="add-first-item" to="/manage-list">
+					Add items
 				</Link>
 			</div>
 		);
