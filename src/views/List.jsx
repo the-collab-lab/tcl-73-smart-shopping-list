@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ListItem } from '../components';
 
-export function List({ data }) {
+export function List({ listPath, data }) {
 	const [searchItem, setSearchItem] = useState('');
 
 	const handleChange = (e) => {
@@ -32,9 +32,16 @@ export function List({ data }) {
 					X
 				</button>
 			)}
+			<p>Check off items as you shop, your list will reset after 24hrs.</p>
+			<p>Only manually uncheck if you didn't make the purchase.</p>
 			<ul>
-				{filteredItems.map((item, index) => (
-					<ListItem name={item.name} key={index} />
+				{filteredItems.map((item) => (
+					<ListItem
+						name={item.name}
+						key={item.id}
+						listPath={listPath}
+						item={item}
+					/>
 				))}
 			</ul>
 
