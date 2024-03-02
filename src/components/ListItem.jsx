@@ -4,15 +4,14 @@ import { ONE_DAY_IN_MILLISECONDS } from '../utils';
 import './ListItem.css';
 
 export function ListItem({ listPath, item, name }) {
-	const [isChecked, setIsChecked] = useState(false);
+	const [isChecked, setIsChecked] = useState(item.isChecked || false);
 
 	function handleChange() {
-		setIsChecked(!isChecked);
 		updateItem(listPath, { ...item, isChecked: !isChecked });
+		setIsChecked(!isChecked);
 	}
 
 	useEffect(() => {
-		//
 		if (item.dateLastPurchased) {
 			const currentDate = new Date();
 			const seconds = item.dateLastPurchased.seconds;
@@ -23,8 +22,17 @@ export function ListItem({ listPath, item, name }) {
 				ONE_DAY_IN_MILLISECONDS;
 
 			setIsChecked(currentDate.getTime() < expirationDate);
+
+			const timeoutId = setTimeout(() => {
+				if (!isChecked) {
+					// Only update if unchecked due to expiration
+					updateItem(listPath, { ...item, isChecked: false });
+				}
+			}, 500); // Delay slightly for smoother experience
+
+			return () => clearTimeout(timeoutId);
 		}
-	}, [item.dateLastPurchased]);
+	}, [item.dateLastPurchased, isChecked]);
 
 	return (
 		<li className="ListItem">
