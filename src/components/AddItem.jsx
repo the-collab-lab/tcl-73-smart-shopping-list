@@ -19,7 +19,14 @@ export function AddItem({ listPath, data }) {
 				formRef.current.reset();
 				return alert('Cannot submit without an item name');
 			}
-			isItemDuplicate(itemName, data);
+
+			if (isItemDuplicate(itemName, data)) {
+				formRef.current.reset();
+				return alert(
+					'This item is already in the list, cannot submit a duplicate.',
+				);
+			}
+
 			await addItem(listPath, {
 				itemName,
 				daysUntilNextPurchase,
