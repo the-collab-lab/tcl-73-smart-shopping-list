@@ -11,7 +11,11 @@ import {
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from './config';
-import { getFutureDate, getDaysBetweenDates } from '../utils';
+import {
+	getFutureDate,
+	getDaysBetweenDates,
+	ONE_DAY_IN_MILLISECONDS,
+} from '../utils';
 import { calculateEstimate } from '@the-collab-lab/shopping-list-utils';
 
 /**
@@ -195,20 +199,30 @@ export async function updateItem(listPath, item) {
 	const listCollectionRef = collection(db, listPath, 'items');
 	const itemRef = doc(listCollectionRef, item.id);
 
-	const daysSinceLastPurchase = getDaysBetweenDates(
-		item.dateLastPurchased,
-		Timestamp.now(),
-	);
+	const currentDate = Timestamp.now();
+	const lastUpdate = item.dateLastPurchased || item.dateCreated;
 
+	// last estimated purchase interval
 	const previousEstimate = getDaysBetweenDates(
-		item.dateLastPurchased,
+		lastUpdate,
 		item.dateNextPurchased,
 	);
 
-	const dateNextPurchased = calculateEstimate(
+	// number of days since the item was added to the list or last purchased
+	const daysSinceLastPurchase = getDaysBetweenDates(lastUpdate, currentDate);
+
+	// calculated estimate for the number of days until the next purchase
+	const daysUntilNextPurchase = calculateEstimate(
 		previousEstimate,
 		daysSinceLastPurchase,
 		item.totalPurchases,
+	);
+
+	// value for dateNextPurchased property
+	// calculated by multiplying 24 hours(in millisecs) by the daysUntilNextPurchase,
+	// then adding to the current date
+	const dateNextPurchased = new Date(
+		currentDate.toMillis() + daysUntilNextPurchase * ONE_DAY_IN_MILLISECONDS,
 	);
 
 	await updateDoc(itemRef, {
@@ -216,7 +230,6 @@ export async function updateItem(listPath, item) {
 		dateLastPurchased: item.isChecked ? new Date() : null,
 
 		dateNextPurchased,
-
 		totalPurchases: item.isChecked
 			? item.totalPurchases + 1
 			: item.totalPurchases - 1,

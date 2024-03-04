@@ -11,8 +11,8 @@ export function getFutureDate(offset) {
 	return new Date(Date.now() + offset * ONE_DAY_IN_MILLISECONDS);
 }
 
-export function getDaysBetweenDates(dateLastPurchased, dateTwo) {
-	const milliseconds = dateTwo.toMillis() - dateLastPurchased.toMillis();
+export function getDaysBetweenDates(dateOne, dateTwo) {
+	const milliseconds = dateTwo.toMillis() - dateOne.toMillis();
 	const days = Math.round(milliseconds / ONE_DAY_IN_MILLISECONDS);
-	console.log(days);
+	return days;
 }
