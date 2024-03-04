@@ -4,10 +4,20 @@ export const isInputEmpty = (userInput) => {
 };
 
 export const isItemDuplicate = (newItem, itemsList) => {
-	const trimmedNewItem = newItem.split(' ').join('');
+	const removePunctuation = (inputItem) => {
+		const punctuation = /[\.,?!]/g;
+		const itemWithoutPunctuation = inputItem.replace(punctuation, '');
+		return itemWithoutPunctuation;
+	};
+
+	const trimmedNewItem = removePunctuation(newItem)
+		.split(' ')
+		.join('')
+		.toLowerCase();
+
 	return (
 		itemsList.filter((item) =>
-			item.name.toLowerCase().includes(trimmedNewItem.toLowerCase()),
+			item.name.toLowerCase().split(' ').join('').includes(trimmedNewItem),
 		).length > 0
 	);
 };
