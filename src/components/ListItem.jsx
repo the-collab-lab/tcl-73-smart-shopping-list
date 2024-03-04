@@ -9,7 +9,6 @@ export function ListItem({ listPath, item, name }) {
 	function handleChange() {
 		updateItem(listPath, { ...item, isChecked: !isChecked });
 		setIsChecked(!isChecked);
-		console.log(isChecked);
 	}
 
 	useEffect(() => {
@@ -32,7 +31,7 @@ export function ListItem({ listPath, item, name }) {
 
 			return () => clearTimeout(timeoutId);
 		}
-	}, [item.dateLastPurchased, isChecked]);
+	}, [item.dateLastPurchased, item.isChecked]);
 
 	return (
 		<li className="ListItem">
