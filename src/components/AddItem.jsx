@@ -1,5 +1,6 @@
 import { addItem } from '../api/firebase';
 import { useRef } from 'react';
+import { isInputEmpty } from '../utils/itemValidator.js';
 
 export function AddItem({ listPath }) {
 	const formRef = useRef(null);
@@ -14,6 +15,8 @@ export function AddItem({ listPath }) {
 		);
 
 		try {
+			isInputEmpty();
+
 			await addItem(listPath, {
 				itemName,
 				daysUntilNextPurchase,
