@@ -2,7 +2,7 @@ import { addItem } from '../api/firebase';
 import { useRef } from 'react';
 import { isInputEmpty, isItemDuplicate } from '../utils/itemValidator.js';
 
-export function AddItem({ listPath }) {
+export function AddItem({ listPath, data }) {
 	const formRef = useRef(null);
 
 	const handleSubmit = async (e) => {
@@ -15,8 +15,11 @@ export function AddItem({ listPath }) {
 		);
 
 		try {
-			isInputEmpty();
-			isItemDuplicate();
+			if (isInputEmpty(itemName)) {
+				formRef.current.reset();
+				return alert('Cannot submit without an item name');
+			}
+			isItemDuplicate(itemName, data);
 			await addItem(listPath, {
 				itemName,
 				daysUntilNextPurchase,
@@ -33,7 +36,7 @@ export function AddItem({ listPath }) {
 		<form ref={formRef} onSubmit={handleSubmit}>
 			<div>
 				<label htmlFor="item">Item Name</label>
-				<input name="itemName" type="text" id="item" required />
+				<input name="itemName" type="text" id="item" />
 			</div>
 
 			<div>

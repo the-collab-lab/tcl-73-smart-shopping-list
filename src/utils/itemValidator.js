@@ -5,7 +5,7 @@ export const isInputEmpty = (userInput) => {
 
 export const isItemDuplicate = (newItem, itemsList) => {
 	const removePunctuation = (inputItem) => {
-		const punctuation = /[\.,?!]/g;
+		const punctuation = /[.,?!]/g;
 		const itemWithoutPunctuation = inputItem.replace(punctuation, '');
 		return itemWithoutPunctuation;
 	};
