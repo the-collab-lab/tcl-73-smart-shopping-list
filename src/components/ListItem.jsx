@@ -23,15 +23,11 @@ export function ListItem({ listPath, item, name }) {
 
 			setIsChecked(currentDate.getTime() < expirationDate);
 
-			const timeoutId = setTimeout(() => {
-				if (!isChecked) {
-					updateItem(listPath, { ...item, isChecked: false });
-				}
-			}, 500);
-
-			return () => clearTimeout(timeoutId);
+			if (!isChecked) {
+				updateItem(listPath, { ...item, isChecked: false });
+			}
 		}
-	}, [item.dateLastPurchased, item.isChecked]);
+	}, [item.dateLastPurchased, isChecked]);
 
 	return (
 		<li className="ListItem">
