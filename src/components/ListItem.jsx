@@ -23,14 +23,14 @@ export function ListItem({ listPath, item, name }) {
 
 			setIsChecked(currentDate.getTime() < expirationDate);
 
-			const timeoutId = setTimeout(() => {
-				if (!isChecked) {
-					// Only update if unchecked due to expiration
-					updateItem(listPath, { ...item, isChecked: false });
-				}
-			}, 500); // Delay slightly for smoother experience
+			// const timeoutId = setTimeout(() => {
+			// 	if (!isChecked) {
+			// 		// Only update if unchecked due to expiration
+			// 		updateItem(listPath, { ...item, isChecked: false });
+			// 	}
+			// }, 500); // Delay slightly for smoother experience
 
-			return () => clearTimeout(timeoutId);
+			// return () => clearTimeout(timeoutId);
 		}
 	}, [item.dateLastPurchased, isChecked]);
 
