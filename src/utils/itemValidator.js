@@ -15,9 +15,14 @@ export const isItemDuplicate = (newItem, itemsList) => {
 		.join('')
 		.toLowerCase();
 
-	return (
-		itemsList.filter((item) =>
-			item.name.toLowerCase().split(' ').join('').includes(trimmedNewItem),
-		).length > 0
-	);
+	const isInTheList = itemsList.find((item) => {
+		const trimmedCurrentItem = removePunctuation(item.name)
+			.toLowerCase()
+			.split(' ')
+			.join('');
+
+		return trimmedCurrentItem === trimmedNewItem;
+	});
+
+	return isInTheList;
 };
