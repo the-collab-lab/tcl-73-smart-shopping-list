@@ -61,7 +61,7 @@ export function AddItem({ listPath, data }) {
 							name="daysUntilNextPurchase"
 							type="radio"
 							id="soon"
-							required
+							defaultChecked
 						/>
 					</li>
 					<li>
@@ -71,7 +71,6 @@ export function AddItem({ listPath, data }) {
 							name="daysUntilNextPurchase"
 							type="radio"
 							id="kind-of-soon"
-							required
 						/>
 					</li>
 					<li>
@@ -81,7 +80,6 @@ export function AddItem({ listPath, data }) {
 							name="daysUntilNextPurchase"
 							type="radio"
 							id="not-soon"
-							required
 						/>
 					</li>
 				</ul>
