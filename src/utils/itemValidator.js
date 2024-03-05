@@ -1,6 +1,6 @@
 export const isInputEmpty = (userInput) => {
 	const trimmedUserInput = userInput.trim();
-	return trimmedUserInput ? false : true;
+	return !trimmedUserInput;
 };
 
 export const removePunctuation = (inputItem) => {
