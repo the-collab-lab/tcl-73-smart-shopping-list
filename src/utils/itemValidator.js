@@ -3,18 +3,18 @@ export const isInputEmpty = (userInput) => {
 	return trimmedUserInput ? false : true;
 };
 
+export const removePunctuation = (inputItem) => {
+	const punctuation = /[.,?!]/g;
+	const itemWithoutPunctuation = inputItem.replace(punctuation, '');
+	const processedItem = itemWithoutPunctuation
+		.split(' ')
+		.join('')
+		.toLowerCase();
+
+	return processedItem;
+};
+
 export const isItemDuplicate = (newItem, itemsList) => {
-	const removePunctuation = (inputItem) => {
-		const punctuation = /[.,?!]/g;
-		const itemWithoutPunctuation = inputItem.replace(punctuation, '');
-		const processedItem = itemWithoutPunctuation
-			.split(' ')
-			.join('')
-			.toLowerCase();
-
-		return processedItem;
-	};
-
 	const trimmedNewItem = removePunctuation(newItem);
 
 	const isInTheList = itemsList.some((item) => {
