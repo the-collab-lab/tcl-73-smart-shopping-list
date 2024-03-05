@@ -7,19 +7,18 @@ export const isItemDuplicate = (newItem, itemsList) => {
 	const removePunctuation = (inputItem) => {
 		const punctuation = /[.,?!]/g;
 		const itemWithoutPunctuation = inputItem.replace(punctuation, '');
-		return itemWithoutPunctuation;
+		const processedItem = itemWithoutPunctuation
+			.split(' ')
+			.join('')
+			.toLowerCase();
+
+		return processedItem;
 	};
 
-	const trimmedNewItem = removePunctuation(newItem)
-		.split(' ')
-		.join('')
-		.toLowerCase();
+	const trimmedNewItem = removePunctuation(newItem);
 
-	const isInTheList = itemsList.find((item) => {
-		const trimmedCurrentItem = removePunctuation(item.name)
-			.toLowerCase()
-			.split(' ')
-			.join('');
+	const isInTheList = itemsList.some((item) => {
+		const trimmedCurrentItem = removePunctuation(item.name);
 
 		return trimmedCurrentItem === trimmedNewItem;
 	});
