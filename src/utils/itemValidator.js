@@ -14,12 +14,30 @@ export const removePunctuation = (inputItem) => {
 	return processedItem;
 };
 
+export const removeAndSymbolAndWord = (inputItem) => {
+	const inputItemArr = inputItem.split(' ');
+	const includesAndOrAmpersand =
+		inputItemArr.length > 1 &&
+		inputItemArr.some((word) => word === '&' || word.toLowerCase() === 'and');
+
+	if (includesAndOrAmpersand) {
+		const itemWithoutAnds = inputItemArr.map((word) =>
+			word.replace(/(&|and)/gi, ''),
+		);
+		const processedItem = itemWithoutAnds.join('');
+		return processedItem;
+	}
+
+	return inputItem;
+};
+
 export const isItemDuplicate = (newItem, itemsList) => {
-	const trimmedNewItem = removePunctuation(newItem);
+	const trimmedNewItem = removePunctuation(removeAndSymbolAndWord(newItem));
 
 	const isInTheList = itemsList.some((item) => {
-		const trimmedCurrentItem = removePunctuation(item.name);
-
+		const trimmedCurrentItem = removePunctuation(
+			removeAndSymbolAndWord(item.name),
+		);
 		return trimmedCurrentItem === trimmedNewItem;
 	});
 
