@@ -16,3 +16,13 @@ export function getDaysBetweenDates(dateOne, dateTwo) {
 	const days = Math.round(milliseconds / ONE_DAY_IN_MILLISECONDS);
 	return days;
 }
+
+export function itemIsExpired(item) {
+	if (!item.dateLastPurchased) return false;
+
+	const currentDate = new Date();
+	const lastPurchasedInMillis = item.dateLastPurchased.toDate().getTime();
+	const expirationDate = lastPurchasedInMillis + ONE_DAY_IN_MILLISECONDS;
+
+	return currentDate.getTime() >= expirationDate;
+}

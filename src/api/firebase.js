@@ -8,12 +8,14 @@ import {
 	updateDoc,
 	addDoc,
 	Timestamp,
+	increment,
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from './config';
 import {
 	getFutureDate,
 	getDaysBetweenDates,
+	itemIsExpired,
 	ONE_DAY_IN_MILLISECONDS,
 } from '../utils';
 import { calculateEstimate } from '@the-collab-lab/shopping-list-utils';
@@ -195,7 +197,13 @@ export async function addItem(listPath, { itemName, daysUntilNextPurchase }) {
 	});
 }
 
-export async function updateItem(listPath, item) {
+/**
+ * Update an item's properties when purchasing.
+@param {string} listPath - The path of the list we're adding to.
+@param {Object} item - The item from the list, which will be updated/modified.
+@param {boolean} isExpired - Boolean flag indicating whether a purchased item has expired.
+*/
+export async function updateItem(listPath, item, isExpired) {
 	const listCollectionRef = collection(db, listPath, 'items');
 	const itemRef = doc(listCollectionRef, item.id);
 
@@ -225,15 +233,16 @@ export async function updateItem(listPath, item) {
 		currentDate.toMillis() + daysUntilNextPurchase * ONE_DAY_IN_MILLISECONDS,
 	);
 
-	await updateDoc(itemRef, {
-		isChecked: item.isChecked,
-		dateLastPurchased: item.isChecked ? new Date() : null,
-
-		dateNextPurchased,
-		totalPurchases: item.isChecked
-			? item.totalPurchases + 1
-			: item.totalPurchases - 1,
-	});
+	if (isExpired) {
+		await updateDoc(itemRef, { isChecked: false });
+	} else {
+		await updateDoc(itemRef, {
+			isChecked: item.isChecked,
+			dateLastPurchased: item.isChecked ? new Date() : null,
+			dateNextPurchased,
+			totalPurchases: item.isChecked ? increment(1) : increment(-1),
+		});
+	}
 }
 
 export async function deleteItem() {
