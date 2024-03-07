@@ -4,7 +4,7 @@ export const isInputEmpty = (userInput) => {
 };
 
 export const removePunctuation = (inputItem) => {
-	const punctuationAndSpaces = /[.,?!@#$%^*\s]/g;
+	const punctuationAndSpaces = /[.,?!@#$%^&*\s]/g;
 	const processedItem = inputItem
 		.replace(punctuationAndSpaces, '')
 		.toLowerCase();
