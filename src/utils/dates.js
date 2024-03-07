@@ -17,6 +17,10 @@ export function getDaysBetweenDates(startDate, endDate) {
 	return days;
 }
 
+/*
+this function checks whether 24 hours have passed since dateLastPurchased,
+returns true if so, false otherwise
+*/
 export function itemIsExpired(item) {
 	if (!item.dateLastPurchased) return false;
 

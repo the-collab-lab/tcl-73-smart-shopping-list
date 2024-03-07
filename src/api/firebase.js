@@ -233,6 +233,8 @@ export async function updateItem(listPath, item, isExpired) {
 		currentDate.toMillis() + daysUntilNextPurchase * ONE_DAY_IN_MILLISECONDS,
 	);
 
+	// if item is expired, calls updateDoc, only updating isChecked property and setting to 'false', all other values persist.
+	// if item is not expired, else statement handles manually checking/unchecking item.
 	if (isExpired) {
 		await updateDoc(itemRef, { isChecked: false });
 	} else {
