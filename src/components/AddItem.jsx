@@ -1,7 +1,8 @@
 import { addItem } from '../api/firebase';
 import { useRef } from 'react';
+import { isInputEmpty, isItemDuplicate } from '../utils/itemValidator.js';
 
-export function AddItem({ listPath }) {
+export function AddItem({ listPath, data }) {
 	const formRef = useRef(null);
 
 	const handleSubmit = async (e) => {
@@ -14,6 +15,18 @@ export function AddItem({ listPath }) {
 		);
 
 		try {
+			if (isInputEmpty(itemName)) {
+				formRef.current.reset();
+				return alert('Cannot submit without an item name');
+			}
+
+			if (isItemDuplicate(itemName, data)) {
+				formRef.current.reset();
+				return alert(
+					'This item is already in the list, cannot submit a duplicate.',
+				);
+			}
+
 			await addItem(listPath, {
 				itemName,
 				daysUntilNextPurchase,
@@ -30,7 +43,7 @@ export function AddItem({ listPath }) {
 		<form ref={formRef} onSubmit={handleSubmit}>
 			<div>
 				<label htmlFor="item">Item Name</label>
-				<input name="itemName" type="text" id="item" required />
+				<input name="itemName" type="text" id="item" />
 			</div>
 
 			<div>
@@ -48,7 +61,7 @@ export function AddItem({ listPath }) {
 							name="daysUntilNextPurchase"
 							type="radio"
 							id="soon"
-							required
+							defaultChecked
 						/>
 					</li>
 					<li>
@@ -58,7 +71,6 @@ export function AddItem({ listPath }) {
 							name="daysUntilNextPurchase"
 							type="radio"
 							id="kind-of-soon"
-							required
 						/>
 					</li>
 					<li>
@@ -68,7 +80,6 @@ export function AddItem({ listPath }) {
 							name="daysUntilNextPurchase"
 							type="radio"
 							id="not-soon"
-							required
 						/>
 					</li>
 				</ul>
