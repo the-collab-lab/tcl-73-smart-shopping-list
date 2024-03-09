@@ -10,3 +10,23 @@ export const ONE_DAY_IN_MILLISECONDS = 86400000;
 export function getFutureDate(offset) {
 	return new Date(Date.now() + offset * ONE_DAY_IN_MILLISECONDS);
 }
+
+export function getDaysBetweenDates(startDate, endDate) {
+	const milliseconds = endDate.toMillis() - startDate.toMillis();
+	const days = Math.round(milliseconds / ONE_DAY_IN_MILLISECONDS);
+	return days;
+}
+
+/*
+this function checks whether 24 hours have passed since dateLastPurchased,
+returns true if so, false otherwise
+*/
+export function itemIsExpired(item) {
+	if (!item.dateLastPurchased) return false;
+
+	const currentDate = new Date();
+	const lastPurchasedInMillis = item.dateLastPurchased.toDate().getTime();
+	const expirationDate = lastPurchasedInMillis + ONE_DAY_IN_MILLISECONDS;
+
+	return currentDate.getTime() >= expirationDate;
+}

@@ -1,38 +1,27 @@
 import { useEffect, useState } from 'react';
 import { updateItem } from '../api/firebase';
-import { ONE_DAY_IN_MILLISECONDS } from '../utils';
+import { itemIsExpired } from '../utils';
 import './ListItem.css';
 
 export function ListItem({ listPath, item, name }) {
 	const [isChecked, setIsChecked] = useState(item.isChecked || false);
 
 	function handleChange() {
-		updateItem(listPath, { ...item, isChecked: !isChecked });
+		updateItem(listPath, { ...item, isChecked: !isChecked }, false);
 		setIsChecked(!isChecked);
 	}
 
 	useEffect(() => {
 		if (item.dateLastPurchased) {
-			const currentDate = new Date();
-			const seconds = item.dateLastPurchased.seconds;
-			const nanoseconds = item.dateLastPurchased.nanoseconds;
+			const isExpired = itemIsExpired(item);
 
-			const expirationDate =
-				new Date(seconds * 1000 + Math.floor(nanoseconds / 1000000)).getTime() +
-				ONE_DAY_IN_MILLISECONDS;
+			if (isExpired) {
+				updateItem(listPath, item, true);
+			}
 
-			setIsChecked(currentDate.getTime() < expirationDate);
-
-			const timeoutId = setTimeout(() => {
-				if (!isChecked) {
-					// Only update if unchecked due to expiration
-					updateItem(listPath, { ...item, isChecked: false });
-				}
-			}, 500); // Delay slightly for smoother experience
-
-			return () => clearTimeout(timeoutId);
+			setIsChecked(!isExpired);
 		}
-	}, [item.dateLastPurchased, isChecked]);
+	}, [item.dateLastPurchased]);
 
 	return (
 		<li className="ListItem">

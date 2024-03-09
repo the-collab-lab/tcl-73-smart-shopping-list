@@ -7,10 +7,18 @@ import {
 	onSnapshot,
 	updateDoc,
 	addDoc,
+	Timestamp,
+	increment,
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from './config';
-import { getFutureDate } from '../utils';
+import {
+	getFutureDate,
+	getDaysBetweenDates,
+	itemIsExpired,
+	ONE_DAY_IN_MILLISECONDS,
+} from '../utils';
+import { calculateEstimate } from '@the-collab-lab/shopping-list-utils';
 
 /**
  * A custom hook that subscribes to the user's shopping lists in our Firestore
@@ -189,18 +197,54 @@ export async function addItem(listPath, { itemName, daysUntilNextPurchase }) {
 	});
 }
 
-export async function updateItem(listPath, item) {
+/**
+ * Update an item's properties when purchasing.
+@param {string} listPath - The path of the list we're adding to.
+@param {Object} item - The item from the list, which will be updated/modified.
+@param {boolean} isExpired - Boolean flag indicating whether a purchased item has expired.
+*/
+export async function updateItem(listPath, item, isExpired) {
 	const listCollectionRef = collection(db, listPath, 'items');
 	const itemRef = doc(listCollectionRef, item.id);
 
-	await updateDoc(itemRef, {
-		isChecked: item.isChecked,
-		dateLastPurchased: item.isChecked ? new Date() : null,
+	const currentDate = Timestamp.now();
+	const lastUpdate = item.dateLastPurchased || item.dateCreated;
 
-		totalPurchases: item.isChecked
-			? item.totalPurchases + 1
-			: item.totalPurchases - 1,
-	});
+	// last estimated purchase interval
+	const previousEstimate = getDaysBetweenDates(
+		lastUpdate,
+		item.dateNextPurchased,
+	);
+
+	// number of days since the item was added to the list or last purchased
+	const daysSinceLastPurchase = getDaysBetweenDates(lastUpdate, currentDate);
+
+	// calculated estimate for the number of days until the next purchase
+	const daysUntilNextPurchase = calculateEstimate(
+		previousEstimate,
+		daysSinceLastPurchase,
+		item.totalPurchases,
+	);
+
+	// value for dateNextPurchased property
+	// calculated by multiplying 24 hours(in millisecs) by the daysUntilNextPurchase,
+	// then adding to the current date
+	const dateNextPurchased = new Date(
+		currentDate.toMillis() + daysUntilNextPurchase * ONE_DAY_IN_MILLISECONDS,
+	);
+
+	// if item is expired, calls updateDoc, only updating isChecked property and setting to 'false', all other values persist.
+	// if item is not expired, else statement handles manually checking/unchecking item.
+	if (isExpired) {
+		await updateDoc(itemRef, { isChecked: false });
+	} else {
+		await updateDoc(itemRef, {
+			isChecked: item.isChecked,
+			dateLastPurchased: item.isChecked ? new Date() : null,
+			dateNextPurchased,
+			totalPurchases: item.isChecked ? increment(1) : increment(-1),
+		});
+	}
 }
 
 export async function deleteItem() {
