@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { updateItem } from '../api/firebase';
+import { updateItem, deleteItem } from '../api/firebase';
 import { itemIsExpired } from '../utils';
 import './ListItem.css';
 
@@ -9,6 +9,11 @@ export function ListItem({ listPath, item, name }) {
 	function handleChange() {
 		updateItem(listPath, { ...item, isChecked: !isChecked }, false);
 		setIsChecked(!isChecked);
+	}
+
+	function handleDelete(listPath, item) {
+		console.log(item);
+		deleteItem(listPath, item);
 	}
 
 	useEffect(() => {
@@ -32,6 +37,7 @@ export function ListItem({ listPath, item, name }) {
 				id={item.id}
 			/>
 			<label htmlFor={item.id}>{name}</label>
+			<button onClick={handleDelete}>Delete</button>
 		</li>
 	);
 }
