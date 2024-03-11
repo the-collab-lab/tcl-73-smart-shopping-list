@@ -12,6 +12,9 @@ export function ListItem({ listPath, item, name }) {
 	}
 
 	async function handleDelete() {
+		console.log('list path', listPath);
+		console.log('item', item);
+
 		if (window.confirm('Are you sure you want to delete this item?') === true) {
 			const result = await deleteItem(listPath, item);
 
@@ -22,7 +25,7 @@ export function ListItem({ listPath, item, name }) {
 					alert('Failed to delete item.');
 				}
 			} catch (error) {
-				alert(error);
+				alert(result.message);
 			}
 		}
 	}
