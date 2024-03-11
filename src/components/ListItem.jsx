@@ -11,8 +11,8 @@ export function ListItem({ listPath, item, name }) {
 		setIsChecked(!isChecked);
 	}
 
-	function handleDelete(listPath, item) {
-		console.log(item);
+	function handleDelete() {
+		console.log(item.id);
 		deleteItem(listPath, item);
 	}
 
