@@ -254,7 +254,9 @@ export async function deleteItem(listPath, item) {
 
 	try {
 		await deleteDoc(itemRef);
+
+		return { success: true, message: 'Item successfully deleted' };
 	} catch (error) {
-		throw error;
+		throw `Could not delete there was an error: ${error}`;
 	}
 }

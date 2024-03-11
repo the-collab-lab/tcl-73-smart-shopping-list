@@ -11,11 +11,19 @@ export function ListItem({ listPath, item, name }) {
 		setIsChecked(!isChecked);
 	}
 
-	function handleDelete() {
+	async function handleDelete() {
 		if (window.confirm('Are you sure you want to delete this item?') === true) {
-			deleteItem(listPath, item);
-		} else {
-			return;
+			const result = await deleteItem(listPath, item);
+
+			try {
+				if (result) {
+					alert(result.message);
+				} else {
+					alert('Failed to delete item.');
+				}
+			} catch (error) {
+				alert(error);
+			}
 		}
 	}
 
