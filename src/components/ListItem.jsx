@@ -12,8 +12,11 @@ export function ListItem({ listPath, item, name }) {
 	}
 
 	function handleDelete() {
-		console.log(item.id);
-		deleteItem(listPath, item);
+		if (window.confirm('Are you sure you want to delete this item?') === true) {
+			deleteItem(listPath, item);
+		} else {
+			return;
+		}
 	}
 
 	useEffect(() => {
