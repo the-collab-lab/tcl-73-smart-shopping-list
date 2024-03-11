@@ -24,20 +24,21 @@ export function ListItem({ listPath, item, name }) {
 		}
 	}, [item.dateLastPurchased]);
 
-	const handleSortItem = (item) => {
-		let lastPurchased = item.dateLastPurchased || item.dateCreated;
-		let currentDate = getDaysBetweenDates(
-			lastPurchased,
+	const getPurchaseUrgency = (item) => {
+		let itemLastPurchased = item.dateLastPurchased || item.dateCreated;
+		let numberOfDays = getDaysBetweenDates(
+			itemLastPurchased,
 			item?.dateNextPurchased,
 		);
-		if (currentDate <= 7) {
-			return 'soon';
-		} else if (currentDate > 7 && currentDate < 30) {
-			return 'kind of soon';
-		} else if (currentDate >= 30) {
-			return 'not soon';
-		} else {
-			return 'inactive';
+		switch (true) {
+			case numberOfDays <= 7:
+				return 'soon';
+			case numberOfDays > 7 && numberOfDays < 30:
+				return 'kind of soon';
+			case numberOfDays >= 30 && numberOfDays < 60:
+				return 'not soon';
+			default:
+				return 'inactive';
 		}
 	};
 
@@ -49,8 +50,9 @@ export function ListItem({ listPath, item, name }) {
 				type="checkbox"
 				id={item.id}
 			/>
+
 			<label htmlFor={item.id}>
-				{name}: {handleSortItem(item)}
+				{name}: {getPurchaseUrgency(item)}
 			</label>
 		</li>
 	);
