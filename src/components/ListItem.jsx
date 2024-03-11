@@ -40,6 +40,7 @@ export function ListItem({ listPath, item, name }) {
 			return 'inactive';
 		}
 	};
+
 	return (
 		<li className="ListItem">
 			<input
@@ -49,7 +50,7 @@ export function ListItem({ listPath, item, name }) {
 				id={item.id}
 			/>
 			<label htmlFor={item.id}>
-				{handleSortItem(item)}: {name}
+				{name}: {handleSortItem(item)}
 			</label>
 		</li>
 	);

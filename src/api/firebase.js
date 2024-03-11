@@ -15,7 +15,6 @@ import { db } from './config';
 import {
 	getFutureDate,
 	getDaysBetweenDates,
-	itemIsExpired,
 	ONE_DAY_IN_MILLISECONDS,
 } from '../utils';
 import { calculateEstimate } from '@the-collab-lab/shopping-list-utils';
