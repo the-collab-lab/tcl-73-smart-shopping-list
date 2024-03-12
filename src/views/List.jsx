@@ -14,7 +14,7 @@ export function List({ listPath, data }) {
 		return item.name.toLowerCase().includes(searchItem.toLowerCase());
 	});
 
-	const sortedItems = comparePurchaseUrgency(filteredItems);
+	const sortedItems = filteredItems.sort(comparePurchaseUrgency);
 
 	if (!data.length) {
 		return (
@@ -51,16 +51,22 @@ export function List({ listPath, data }) {
 			)}
 			<p>Check off items as you shop, your list will reset after 24hrs.</p>
 			<p>Only manually uncheck if you didn't make the purchase.</p>
-			<ul>
-				{sortedItems.map((item) => (
-					<ListItem
-						name={item.name}
-						key={item.id}
-						listPath={listPath}
-						item={item}
-					/>
-				))}
-			</ul>
+			<>
+				<ul>
+					<div className="column-name">
+						<p>Name</p>
+						<p>Buy Urgency</p>
+					</div>
+					{sortedItems.map((item) => (
+						<ListItem
+							name={item.name}
+							key={item.id}
+							listPath={listPath}
+							item={item}
+						/>
+					))}
+				</ul>
+			</>
 			{data.length > 0 && !filteredItems.length > 0 && (
 				<p>There are no matching items.</p>
 			)}
