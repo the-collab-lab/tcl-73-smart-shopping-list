@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { updateItem, deleteItem } from '../api/firebase';
 import { itemIsExpired } from '../utils';
 import './ListItem.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 export function ListItem({ listPath, item, name }) {
 	const [isChecked, setIsChecked] = useState(item.isChecked || false);
@@ -51,7 +53,9 @@ export function ListItem({ listPath, item, name }) {
 				id={item.id}
 			/>
 			<label htmlFor={item.id}>{name}</label>
-			<button onClick={handleDelete}>Delete</button>
+			<button aria-label={`Delete ${name}`} onClick={handleDelete}>
+				<FontAwesomeIcon icon={faTrashCan} /> Delete
+			</button>
 		</li>
 	);
 }

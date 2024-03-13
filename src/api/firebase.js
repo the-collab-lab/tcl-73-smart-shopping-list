@@ -257,9 +257,6 @@ export async function deleteItem(listPath, item) {
 
 		return { success: true, message: 'Item successfully deleted' };
 	} catch (error) {
-		throw {
-			success: false,
-			message: `Could not delete there was an error: ${error}`,
-		};
+		throw new Error(`Could not delete there was an error: ${error}`);
 	}
 }
