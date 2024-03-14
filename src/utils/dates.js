@@ -37,7 +37,9 @@ export function itemIsOverdue(item) {
 	const itemNextPurchase = item.dateNextPurchased;
 	const today = Timestamp.now();
 	return (
-		today > itemNextPurchase && //Check if today's date in milliseconds is past the next purchase date
+		//Check if today's date in milliseconds is past the next purchase date
+		today > itemNextPurchase &&
+		//Check if the days between next purchase and today are less than 60
 		getDaysBetweenDates(itemNextPurchase, today) < 60
-	); //Check if the days between next purchase and today are less than 60
+	);
 }
