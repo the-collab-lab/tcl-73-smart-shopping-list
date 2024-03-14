@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { updateItem } from '../api/firebase';
 import { itemIsExpired } from '../utils';
-import { getDaysBetweenDates } from '../utils/dates';
+import { getDaysBetweenDates, itemIsOverdue } from '../utils/dates';
 import './ListItem.css';
-import { Timestamp } from 'firebase/firestore';
 
 export function ListItem({ listPath, item, name }) {
 	const [isChecked, setIsChecked] = useState(item.isChecked || false);
@@ -16,29 +15,22 @@ export function ListItem({ listPath, item, name }) {
 	useEffect(() => {
 		if (item.dateLastPurchased) {
 			const isExpired = itemIsExpired(item);
-
 			if (isExpired) {
 				updateItem(listPath, item, true);
 			}
 
 			setIsChecked(!isExpired);
 		}
-	}, [item.dateLastPurchased]);
+	}, [item]);
 
 	const getPurchaseUrgency = (item) => {
 		const itemLastPurchased = item.dateLastPurchased || item.dateCreated;
-		const itemNextPurchase = item.dateNextPurchased;
-		const today = Timestamp.now();
 		const numberOfDays = getDaysBetweenDates(
 			itemLastPurchased,
 			item.dateNextPurchased,
 		);
 
-		const isOverdue =
-			// Check if today's date in milliseconds is past the next purchase date
-			today.toMillis() > item.dateNextPurchased.toMillis() &&
-			// Check if the days between next purchase and today are less than 60
-			getDaysBetweenDates(itemNextPurchase, today) < 60;
+		const isOverdue = itemIsOverdue(item);
 
 		switch (true) {
 			case isOverdue:

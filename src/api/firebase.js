@@ -217,7 +217,6 @@ export async function updateItem(listPath, item, isExpired) {
 
 	// number of days since the item was added to the list or last purchased
 	const daysSinceLastPurchase = getDaysBetweenDates(lastUpdate, currentDate);
-	console.log(`days since last transaction: ${daysSinceLastPurchase}`);
 
 	// calculated estimate for the number of days until the next purchase
 	const daysUntilNextPurchase = calculateEstimate(
@@ -226,21 +225,21 @@ export async function updateItem(listPath, item, isExpired) {
 		item.totalPurchases,
 	);
 
-	console.log(
-		`days until ${item.name} needs to be purchased: ${daysUntilNextPurchase}`,
-	);
-	// value for dateNextPurchased property
-	// calculated by multiplying 24 hours(in millisecs) by the daysUntilNextPurchase,
-	// then adding to the current date
-	const dateNextPurchased = new Date(
-		currentDate.toMillis() +
-			(daysUntilNextPurchase || 1 * ONE_DAY_IN_MILLISECONDS),
-	);
+	/*
+	value for dateNextPurchased property,
+	calculated by multiplying 24 hours(in millisecs) by the daysUntilNextPurchase,
+	then adding to the current date.
+	*/
+	const dateNextPurchased =
+		item.totalPurchases === 0 //if item is new and has 0 purchases, there is no data to calculate an estimate...
+			? item.dateNextPurchased //...so we persist the original date calculated when the item was first added
+			: new Date(
+					currentDate.toMillis() +
+						daysUntilNextPurchase * ONE_DAY_IN_MILLISECONDS,
+				);
 
-	console.log(`date next purchased: ${dateNextPurchased}`);
-
-	// if item is expired, calls updateDoc, only updating isChecked property and setting to 'false', all other values persist.
-	// if item is not expired, else statement handles manually checking/unchecking item.
+	//if item is expired, calls updateDoc, only updating isChecked property and setting to 'false', all other values persist.
+	//if item is not expired, else statement handles manually checking/unchecking item.
 	if (isExpired) {
 		await updateDoc(itemRef, { isChecked: false });
 	} else {
