@@ -34,15 +34,17 @@ export function ListItem({ listPath, item, name }) {
 
 		const isInactive = itemIsInactive(item);
 		const isOverdue = itemIsOverdue(item);
+		const daysPastDue =
+			isOverdue && getDaysBetweenDates(item.dateNextPurchased, today);
 
 		switch (true) {
 			case isInactive:
 				return 'inactive (last purchased over 60 days ago)';
 			case isOverdue:
-				return 'overdue';
+				return `overdue (${daysPastDue === 1 ? '1 day past' : `${daysPastDue} days past`})`;
 			case numberOfDays <= 7:
 				return `soon (in ${numberOfDays === 1 ? '1 day' : `${numberOfDays} days`})`;
-			case numberOfDays >= 7 && numberOfDays <= 30:
+			case numberOfDays >= 7 && numberOfDays < 30:
 				return `kind of soon (in ${numberOfDays} days)`;
 			case numberOfDays >= 30:
 				return `not soon (in ${numberOfDays} days)`;
