@@ -14,10 +14,7 @@ export function ListItem({ listPath, item, name }) {
 	}
 
 	async function handleDelete() {
-		console.log('list path', listPath);
-		console.log('item', item);
-
-		if (window.confirm('Are you sure you want to delete this item?') === true) {
+		if (window.confirm('Are you sure you want to delete this item?')) {
 			const result = await deleteItem(listPath, item);
 
 			try {
