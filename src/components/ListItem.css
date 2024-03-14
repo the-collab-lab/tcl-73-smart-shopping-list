@@ -8,7 +8,7 @@
 .ListItem > li {
 	display: flex;
 	border-bottom: 0.5px solid white;
-	width: 75%;
+	width: 100%;
 	margin: auto;
 }
 
@@ -29,9 +29,8 @@
 
 .column-name {
 	display: flex;
-	flex-direction: row;
 	justify-content: space-between;
-	width: 75%;
+	width: 100%;
 	margin: auto;
 	font-size: 1.3em;
 	font-weight: bold;

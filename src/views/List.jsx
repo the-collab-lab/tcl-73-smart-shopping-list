@@ -54,8 +54,8 @@ export function List({ listPath, data }) {
 			<>
 				<ul>
 					<div className="column-name">
-						<p>Name</p>
-						<p>Buy Urgency</p>
+						<p>Item Name</p>
+						<p>Purchase Priority</p>
 					</div>
 					{sortedItems.map((item) => (
 						<ListItem

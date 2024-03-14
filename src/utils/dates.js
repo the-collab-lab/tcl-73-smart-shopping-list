@@ -33,13 +33,17 @@ export function itemIsExpired(item) {
 	return currentDate.getTime() >= expirationDate;
 }
 
-export function itemIsOverdue(item) {
-	const itemNextPurchase = item.dateNextPurchased;
+//returns true if item was last purchased 60 or more days ago.
+export function itemIsInactive(item) {
+	const lastPurchaseDate = item.dateLastPurchased || item.dateCreated;
 	const today = Timestamp.now();
-	return (
-		//Check if today's date in milliseconds is past the next purchase date
-		today > itemNextPurchase &&
-		//Check if the days between next purchase and today are less than 60
-		getDaysBetweenDates(itemNextPurchase, today) < 60
-	);
+	return getDaysBetweenDates(lastPurchaseDate, today) >= 60;
+}
+
+//returns true if item's next purchase date has already passed, but is not inactive yet.
+export function itemIsOverdue(item) {
+	const nextPurchaseDate = item.dateNextPurchased;
+	const today = Timestamp.now();
+
+	return today > nextPurchaseDate && !itemIsInactive(item);
 }

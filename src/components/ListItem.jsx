@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
 import { updateItem } from '../api/firebase';
 import { itemIsExpired } from '../utils';
-import { getDaysBetweenDates, itemIsOverdue } from '../utils/dates';
+import {
+	getDaysBetweenDates,
+	itemIsInactive,
+	itemIsOverdue,
+} from '../utils/dates';
 import './ListItem.css';
+import { Timestamp } from 'firebase/firestore';
 
 export function ListItem({ listPath, item, name }) {
 	const [isChecked, setIsChecked] = useState(item.isChecked || false);
@@ -24,25 +29,23 @@ export function ListItem({ listPath, item, name }) {
 	}, [item]);
 
 	const getPurchaseUrgency = (item) => {
-		const itemLastPurchased = item.dateLastPurchased || item.dateCreated;
-		const numberOfDays = getDaysBetweenDates(
-			itemLastPurchased,
-			item.dateNextPurchased,
-		);
+		const today = Timestamp.now();
+		const numberOfDays = getDaysBetweenDates(today, item.dateNextPurchased);
 
+		const isInactive = itemIsInactive(item);
 		const isOverdue = itemIsOverdue(item);
 
 		switch (true) {
+			case isInactive:
+				return 'inactive (last purchased over 60 days ago)';
 			case isOverdue:
 				return 'overdue';
 			case numberOfDays <= 7:
-				return 'soon';
-			case numberOfDays > 7 && numberOfDays < 30:
-				return 'kind of soon';
-			case numberOfDays >= 30 && numberOfDays < 60:
-				return 'not soon';
-			default:
-				return 'inactive';
+				return `soon (in ${numberOfDays} days)`;
+			case numberOfDays >= 7 && numberOfDays <= 30:
+				return `kind of soon (in ${numberOfDays} days)`;
+			case numberOfDays >= 30:
+				return `not soon (in ${numberOfDays} days)`;
 		}
 	};
 
