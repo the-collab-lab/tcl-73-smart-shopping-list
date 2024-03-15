@@ -1,3 +1,5 @@
+@import '../index.css';
+
 .ListItem {
 	align-items: baseline;
 	display: flex;
@@ -7,13 +9,19 @@
 
 .ListItem > li {
 	display: flex;
-	border-bottom: 0.5px solid white;
+	border-bottom: 0.5px solid var(--color-border);
 	width: 100%;
 	margin: auto;
 }
 
 .ListItem > li:hover {
-	background-color: rgba(255, 255, 255, 0.25);
+	background-color: hsla(220, 13%, 98%, 0.25);
+}
+
+@media screen and (prefers-color-scheme: light) {
+	.ListItem > li:hover {
+		background-color: hsla(220, 13%, 25%, 0.25);
+	}
 }
 
 .ListItem-checkbox {

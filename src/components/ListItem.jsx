@@ -44,7 +44,7 @@ export function ListItem({ listPath, item, name }) {
 				return `overdue (${daysPastDue === 1 ? '1 day past' : `${daysPastDue} days past`})`;
 			case numberOfDays <= 7:
 				return `soon (in ${numberOfDays === 1 ? '1 day' : `${numberOfDays} days`})`;
-			case numberOfDays >= 7 && numberOfDays < 30:
+			case numberOfDays > 7 && numberOfDays < 30:
 				return `kind of soon (in ${numberOfDays} days)`;
 			case numberOfDays >= 30:
 				return `not soon (in ${numberOfDays} days)`;
