@@ -7,6 +7,7 @@ import {
 	onSnapshot,
 	updateDoc,
 	addDoc,
+	deleteDoc,
 	Timestamp,
 	increment,
 } from 'firebase/firestore';
@@ -252,10 +253,15 @@ export async function updateItem(listPath, item, isExpired) {
 	}
 }
 
-export async function deleteItem() {
-	/**
-	 * TODO: Fill this out so that it uses the correct Firestore function
-	 * to delete an existing item. You'll need to figure out what arguments
-	 * this function must accept!
-	 */
+export async function deleteItem(listPath, item) {
+	const listCollectionRef = collection(db, listPath, 'items');
+	const itemRef = doc(listCollectionRef, item.id);
+
+	try {
+		await deleteDoc(itemRef);
+
+		return { success: true, message: 'Item successfully deleted' };
+	} catch (error) {
+		throw new Error(`Could not delete there was an error: ${error}`);
+	}
 }

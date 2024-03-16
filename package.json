@@ -7,6 +7,11 @@
 		"npm": ">=8.19.0"
 	},
 	"dependencies": {
+		"@fortawesome/fontawesome-free": "^6.5.1",
+		"@fortawesome/fontawesome-svg-core": "^6.5.1",
+		"@fortawesome/free-regular-svg-icons": "^6.5.1",
+		"@fortawesome/free-solid-svg-icons": "^6.5.1",
+		"@fortawesome/react-fontawesome": "^0.2.0",
 		"@the-collab-lab/shopping-list-utils": "^2.2.0",
 		"firebase": "^10.1.0",
 		"react": "^18.2.0",

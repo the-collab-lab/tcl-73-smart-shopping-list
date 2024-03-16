@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { updateItem } from '../api/firebase';
+import { updateItem, deleteItem } from '../api/firebase';
 import { itemIsExpired } from '../utils';
 import {
 	getDaysBetweenDates,
@@ -8,6 +8,8 @@ import {
 } from '../utils/dates';
 import './ListItem.css';
 import { Timestamp } from 'firebase/firestore';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 export function ListItem({ listPath, item, name }) {
 	const [isChecked, setIsChecked] = useState(item.isChecked || false);
@@ -15,6 +17,17 @@ export function ListItem({ listPath, item, name }) {
 	function handleChange() {
 		updateItem(listPath, { ...item, isChecked: !isChecked }, false);
 		setIsChecked(!isChecked);
+	}
+
+	async function handleDelete() {
+		if (window.confirm('Are you sure you want to delete this item?')) {
+			try {
+				const result = await deleteItem(listPath, item);
+				alert(result.message);
+			} catch (error) {
+				alert(`Failed to delete item: ${error.message}`);
+			}
+		}
 	}
 
 	useEffect(() => {
@@ -65,6 +78,9 @@ export function ListItem({ listPath, item, name }) {
 					<p>{name}</p>
 					<p>{getPurchaseUrgency(item)}</p>
 				</label>
+				<button aria-label={`Delete ${name}`} onClick={handleDelete}>
+					<FontAwesomeIcon icon={faTrashCan} /> Delete
+				</button>
 			</li>
 		</div>
 	);
