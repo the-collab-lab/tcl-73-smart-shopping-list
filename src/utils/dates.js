@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 export const ONE_DAY_IN_MILLISECONDS = 86400000;
 
 /**
@@ -29,4 +31,19 @@ export function itemIsExpired(item) {
 	const expirationDate = lastPurchasedInMillis + ONE_DAY_IN_MILLISECONDS;
 
 	return currentDate.getTime() >= expirationDate;
+}
+
+//returns true if item was last purchased 60 or more days ago.
+export function itemIsInactive(item) {
+	const lastPurchaseDate = item.dateLastPurchased || item.dateCreated;
+	const today = Timestamp.now();
+	return getDaysBetweenDates(lastPurchaseDate, today) >= 60;
+}
+
+//returns true if item's next purchase date has already passed, but is not inactive yet.
+export function itemIsOverdue(item) {
+	const nextPurchaseDate = item.dateNextPurchased;
+	const today = Timestamp.now();
+
+	return today > nextPurchaseDate && !itemIsInactive(item);
 }
