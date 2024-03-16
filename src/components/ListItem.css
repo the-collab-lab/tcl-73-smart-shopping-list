@@ -1,8 +1,27 @@
+@import '../index.css';
+
 .ListItem {
 	align-items: baseline;
 	display: flex;
 	flex-direction: row;
 	font-size: 1.2em;
+}
+
+.ListItem > li {
+	display: flex;
+	border-bottom: 0.5px solid var(--color-border);
+	width: 100%;
+	margin: auto;
+}
+
+.ListItem > li:hover {
+	background-color: hsla(220, 13%, 98%, 0.25);
+}
+
+@media screen and (prefers-color-scheme: light) {
+	.ListItem > li:hover {
+		background-color: hsla(220, 13%, 25%, 0.25);
+	}
 }
 
 .ListItem-checkbox {
@@ -11,4 +30,18 @@
 
 .ListItem-label {
 	margin-left: 0.2em;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.column-name {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	margin: auto;
+	font-size: 1.3em;
+	font-weight: bold;
+	text-decoration: underline;
+	text-underline-offset: 5px;
 }

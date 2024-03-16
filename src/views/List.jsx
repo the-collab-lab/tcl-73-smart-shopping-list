@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ListItem } from '../components';
 import { Link } from 'react-router-dom';
+import { comparePurchaseUrgency } from '../utils/comparePurchaseUrgency';
 
 export function List({ listPath, data }) {
 	const [searchItem, setSearchItem] = useState('');
@@ -12,6 +13,8 @@ export function List({ listPath, data }) {
 	const filteredItems = data.filter((item) => {
 		return item.name.toLowerCase().includes(searchItem.toLowerCase());
 	});
+
+	const sortedItems = filteredItems.sort(comparePurchaseUrgency);
 
 	if (!data.length) {
 		return (
@@ -48,16 +51,22 @@ export function List({ listPath, data }) {
 			)}
 			<p>Check off items as you shop, your list will reset after 24hrs.</p>
 			<p>Only manually uncheck if you didn't make the purchase.</p>
-			<ul>
-				{filteredItems.map((item) => (
-					<ListItem
-						name={item.name}
-						key={item.id}
-						listPath={listPath}
-						item={item}
-					/>
-				))}
-			</ul>
+			<>
+				<ul>
+					<div className="column-name">
+						<p>Item Name</p>
+						<p>Purchase Priority</p>
+					</div>
+					{sortedItems.map((item) => (
+						<ListItem
+							name={item.name}
+							key={item.id}
+							listPath={listPath}
+							item={item}
+						/>
+					))}
+				</ul>
+			</>
 			{data.length > 0 && !filteredItems.length > 0 && (
 				<p>There are no matching items.</p>
 			)}
