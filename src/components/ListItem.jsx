@@ -15,16 +15,11 @@ export function ListItem({ listPath, item, name }) {
 
 	async function handleDelete() {
 		if (window.confirm('Are you sure you want to delete this item?')) {
-			const result = await deleteItem(listPath, item);
-
 			try {
-				if (result) {
-					alert(result.message);
-				} else {
-					alert('Failed to delete item.');
-				}
-			} catch (error) {
+				const result = await deleteItem(listPath, item);
 				alert(result.message);
+			} catch (error) {
+				alert(`Failed to delete item: ${error.message}`);
 			}
 		}
 	}
