@@ -33,6 +33,7 @@ export function List({ listPath, data, listName }) {
 	}
 	return (
 		<div>
+			<p>List name: {listName}</p>
 			<label htmlFor="item-search"> Search for an item: </label>
 			<input
 				id="item-search"
