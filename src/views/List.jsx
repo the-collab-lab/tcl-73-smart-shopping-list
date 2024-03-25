@@ -3,7 +3,8 @@ import { ListItem } from '../components';
 import { Link } from 'react-router-dom';
 import { comparePurchaseUrgency } from '../utils/comparePurchaseUrgency';
 
-export function List({ listPath, data }) {
+export function List({ listPath, data, listName }) {
+	console.log('listName', listName);
 	const [searchItem, setSearchItem] = useState('');
 
 	const handleChange = (e) => {

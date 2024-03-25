@@ -5,25 +5,26 @@ import { useNavigate } from 'react-router-dom';
 import { createList } from '../api/firebase.js';
 import { useAuth } from '../api';
 
-export function Home({ data, setListPath }) {
+export function Home({ data, setListPath, setListName }) {
 	const { user } = useAuth();
 	const userId = user?.uid;
 	const userEmail = user?.email;
 	const navigate = useNavigate();
 
-	const [listName, setListName] = useState('');
+	const [newlistName, setNewListName] = useState('');
 
 	const handleInputChange = (event) => {
-		setListName(event.target.value);
+		setNewListName(event.target.value);
 	};
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const trimmedListName = listName.trim();
+		const trimmedListName = newlistName.trim();
 		if (trimmedListName) {
 			const listItem = await createList(userId, userEmail, trimmedListName);
 			setListPath(listItem.path);
-			setListName('');
+			setListName(listItem.id);
+			setNewListName('');
 			navigate('/list');
 			alert(`New list was created named: ${trimmedListName}`);
 		} else {
@@ -42,7 +43,7 @@ export function Home({ data, setListPath }) {
 					type="text"
 					name="list-name"
 					id="list-name"
-					value={listName}
+					value={newlistName}
 					onChange={handleInputChange}
 					required
 				/>

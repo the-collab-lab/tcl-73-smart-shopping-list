@@ -22,6 +22,11 @@ export function App() {
 		null,
 	);
 
+	const [listName, setListName] = useStateWithStorage(
+		'tcl-shopping-list-name',
+		null,
+	);
+
 	/**
 	 * This custom hook holds info about the current signed in user.
 	 * Check ./api/useAuth.jsx for its implementation.
@@ -48,11 +53,19 @@ export function App() {
 				<Route path="/" element={<Layout />}>
 					<Route
 						index
-						element={<Home data={lists} setListPath={setListPath} />}
+						element={
+							<Home
+								data={lists}
+								setListPath={setListPath}
+								setListName={setListName}
+							/>
+						}
 					/>
 					<Route
 						path="/list"
-						element={<List data={data} listPath={listPath} />}
+						element={
+							<List data={data} listPath={listPath} listName={listName} />
+						}
 					/>
 					<Route
 						path="/manage-list"
