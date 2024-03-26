@@ -3,7 +3,7 @@ import { ListItem } from '../components';
 import { Link } from 'react-router-dom';
 import { comparePurchaseUrgency } from '../utils/comparePurchaseUrgency';
 
-export function List({ listPath, data }) {
+export function List({ listPath, data, listName }) {
 	const [searchItem, setSearchItem] = useState('');
 
 	const handleChange = (e) => {
@@ -32,7 +32,7 @@ export function List({ listPath, data }) {
 	}
 	return (
 		<div>
-			<p>List name: </p>
+			<p>List name: {listName}</p>
 			<label htmlFor="item-search"> Search for an item: </label>
 			<input
 				id="item-search"
