@@ -6,7 +6,6 @@ import { createList } from '../api/firebase.js';
 import { useAuth } from '../api';
 
 export function Home({ data, setListPath, setListName }) {
-	console.log('data', data);
 	const { user } = useAuth();
 	const userId = user?.uid;
 	const userEmail = user?.email;
