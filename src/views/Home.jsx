@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createList } from '../api/firebase.js';
 import { useAuth } from '../api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSquareGithub } from '@fortawesome/free-brands-svg-icons';
+import StackedLogo from './StackedLogo.jsx';
 
 export function Home({ data, setListPath }) {
 	const { user } = useAuth();
@@ -33,9 +36,6 @@ export function Home({ data, setListPath }) {
 
 	return (
 		<div className="Home">
-			<p>
-				Hello from the home (<code>/</code>) page!
-			</p>
 			<form id="item-form" onSubmit={handleSubmit}>
 				<label htmlFor="list-name">Enter a new list name:</label>
 				<input
@@ -48,16 +48,39 @@ export function Home({ data, setListPath }) {
 				/>
 				<button type="submit">Create a list</button>
 			</form>
-			<ul>
-				{data.map((item) => (
-					<SingleList
-						key={item.path}
-						name={item.name}
-						path={item.path}
-						setListPath={setListPath}
-					/>
-				))}
-			</ul>
+			{data.length ? (
+				<ul>
+					{data.map((item) => (
+						<SingleList
+							key={item.path}
+							name={item.name}
+							path={item.path}
+							setListPath={setListPath}
+						/>
+					))}
+				</ul>
+			) : (
+				<div>
+					<p>
+						There are no lists to display. Please create a list to get started!
+					</p>
+				</div>
+			)}
+			<a
+				href="https://github.com/the-collab-lab/tcl-73-smart-shopping-list"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<FontAwesomeIcon icon={faSquareGithub} />
+			</a>
+			<a
+				href="https://the-collab-lab.codes/"
+				target="_blank"
+				rel="noopener noreferrer"
+				className="logoStack"
+			>
+				<StackedLogo />
+			</a>
 		</div>
 	);
 }
