@@ -8,6 +8,8 @@ import { useShoppingListData, useShoppingLists } from './api';
 
 import { useStateWithStorage } from './utils';
 
+import NotFoundPage from './components/NotFoundPage';
+
 export function App() {
 	/**
 	 * This custom hook takes the path of a shopping list
@@ -59,6 +61,7 @@ export function App() {
 						element={<ManageList listPath={listPath} data={data} />}
 					/>
 				</Route>
+				<Route path="*" element={<NotFoundPage />} />
 			</Routes>
 		</Router>
 	);
