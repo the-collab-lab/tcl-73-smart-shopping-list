@@ -6,9 +6,11 @@ import { createList } from '../api/firebase.js';
 import { useAuth } from '../api';
 
 export function Home({ data, setListPath, setListName }) {
+	console.log('data', data);
 	const { user } = useAuth();
 	const userId = user?.uid;
 	const userEmail = user?.email;
+	const userName = user?.displayName;
 	const navigate = useNavigate();
 
 	const [newlistName, setNewListName] = useState('');
@@ -23,7 +25,6 @@ export function Home({ data, setListPath, setListName }) {
 		if (trimmedListName) {
 			const listItem = await createList(userId, userEmail, trimmedListName);
 			setListPath(listItem.path);
-			setListName(listItem.id);
 			setNewListName('');
 			navigate('/list');
 			alert(`New list was created named: ${trimmedListName}`);

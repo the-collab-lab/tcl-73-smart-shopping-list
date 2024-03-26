@@ -3,8 +3,7 @@ import { ListItem } from '../components';
 import { Link } from 'react-router-dom';
 import { comparePurchaseUrgency } from '../utils/comparePurchaseUrgency';
 
-export function List({ listPath, data, listName }) {
-	console.log('listName', listName);
+export function List({ listPath, data }) {
 	const [searchItem, setSearchItem] = useState('');
 
 	const handleChange = (e) => {
@@ -20,7 +19,7 @@ export function List({ listPath, data, listName }) {
 	if (!data.length) {
 		return (
 			<div>
-				<p>List name: {listName}</p>
+				<p>List name: </p>
 				<label htmlFor="add-first-item">
 					There are no items in this list. Click this button to add your first
 					items!
@@ -33,7 +32,7 @@ export function List({ listPath, data, listName }) {
 	}
 	return (
 		<div>
-			<p>List name: {listName}</p>
+			<p>List name: </p>
 			<label htmlFor="item-search"> Search for an item: </label>
 			<input
 				id="item-search"
