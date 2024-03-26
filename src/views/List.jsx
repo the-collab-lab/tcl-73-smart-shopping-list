@@ -19,7 +19,7 @@ export function List({ listPath, data, listName }) {
 	if (!data.length) {
 		return (
 			<div>
-				<p>List name: </p>
+				<p>List name: {listName}</p>
 				<label htmlFor="add-first-item">
 					There are no items in this list. Click this button to add your first
 					items!
