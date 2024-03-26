@@ -2,9 +2,12 @@ import { useState } from 'react';
 import { ListItem } from '../components';
 import { Link } from 'react-router-dom';
 import { comparePurchaseUrgency } from '../utils/comparePurchaseUrgency';
+import { useAuth } from '../api';
 
 export function List({ listPath, data, listName, userIdFromPath }) {
 	const [searchItem, setSearchItem] = useState('');
+	const { user } = useAuth();
+	const currentUserId = user?.uid;
 
 	const handleChange = (e) => {
 		setSearchItem(e.target.value);
@@ -72,7 +75,11 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 			{data.length > 0 && !filteredItems.length > 0 && (
 				<p>There are no matching items.</p>
 			)}
-			<p>You own this list: {userIdFromPath}</p>
+			{currentUserId === userIdFromPath ? (
+				<p>You own this list.</p>
+			) : (
+				<p>This list has been shared with you.</p>
+			)}
 		</div>
 	);
 }
