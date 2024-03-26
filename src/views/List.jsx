@@ -3,7 +3,7 @@ import { ListItem } from '../components';
 import { Link } from 'react-router-dom';
 import { comparePurchaseUrgency } from '../utils/comparePurchaseUrgency';
 
-export function List({ listPath, data, listName }) {
+export function List({ listPath, data, listName, userIdFromPath }) {
 	const [searchItem, setSearchItem] = useState('');
 
 	const handleChange = (e) => {
@@ -72,6 +72,7 @@ export function List({ listPath, data, listName }) {
 			{data.length > 0 && !filteredItems.length > 0 && (
 				<p>There are no matching items.</p>
 			)}
+			<p>You own this list: {userIdFromPath}</p>
 		</div>
 	);
 }

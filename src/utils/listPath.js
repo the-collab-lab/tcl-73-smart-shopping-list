@@ -6,3 +6,9 @@ export const getListNameFromPath = (listPath) => {
 		.join('');
 	return listName;
 };
+
+export const getUserIdFromPath = (listPath) => {
+	const indexOfFwdSlash = listPath.split('').indexOf('/');
+	const idFromListPath = listPath.split('').splice(0, indexOfFwdSlash).join('');
+	return idFromListPath;
+};
