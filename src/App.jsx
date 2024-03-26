@@ -60,7 +60,9 @@ export function App() {
 					/>
 					<Route
 						path="/manage-list"
-						element={<ManageList listPath={listPath} data={data} />}
+						element={
+							<ManageList listPath={listPath} data={data} listName={listName} />
+						}
 					/>
 				</Route>
 			</Routes>
