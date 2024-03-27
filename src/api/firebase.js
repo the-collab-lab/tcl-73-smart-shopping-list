@@ -270,20 +270,16 @@ export async function getListOwnerDetails(userId, listName) {
 	const listDocRef = doc(db, userId, listName);
 
 	try {
-		// Get the document corresponding to the list
 		const listDoc = await getDoc(listDocRef);
 
 		if (listDoc.exists()) {
-			// Extract ownerId and ownerName from the document
 			const { owner: ownerId, ownerName } = listDoc.data();
 
-			// Return owner details
 			return {
 				ownerId,
 				ownerName,
 			};
 		} else {
-			// Document does not exist
 			throw new Error('List does not exist.');
 		}
 	} catch (error) {
