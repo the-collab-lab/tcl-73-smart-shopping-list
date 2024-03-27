@@ -48,6 +48,16 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 				<Link id="add-first-item" to="/manage-list">
 					Add items
 				</Link>
+				{data.length > 0 && !filteredItems.length > 0 && (
+					<p>There are no matching items.</p>
+				)}
+				{currentUserId === userIdFromPath ? (
+					<p>You own this list.</p>
+				) : (
+					sharedListOwner && (
+						<p>This list belongs to {sharedListOwner.ownerName}.</p>
+					)
+				)}
 			</div>
 		);
 	}
@@ -95,10 +105,10 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 			)}
 			{currentUserId === userIdFromPath ? (
 				<p>You own this list.</p>
-			) : sharedListOwner ? (
-				<p>This list belongs to {sharedListOwner.ownerName}.</p>
 			) : (
-				<p>Loading owner details...</p>
+				sharedListOwner && (
+					<p>This list belongs to {sharedListOwner.ownerName}.</p>
+				)
 			)}
 		</div>
 	);
