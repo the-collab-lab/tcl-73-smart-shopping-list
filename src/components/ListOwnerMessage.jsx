@@ -2,8 +2,6 @@ import { useListOwnerDetails } from '../utils';
 
 export function ListOwnerMessage({ currentUserId, userIdFromPath, listName }) {
 	const sharedListOwner = useListOwnerDetails(userIdFromPath, listName);
-	console.log('currentUserId', currentUserId);
-	console.log('userIdFromPath', userIdFromPath);
 
 	if (currentUserId === userIdFromPath) {
 		return <p>You own this list.</p>;
