@@ -37,6 +37,16 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 		})();
 	}, [userIdFromPath, listName]);
 
+	const listOwnerMessage = () => {
+		currentUserId === userIdFromPath ? (
+			<p>You own this list.</p>
+		) : (
+			sharedListOwner && (
+				<p>This list belongs to {sharedListOwner.ownerName}.</p>
+			)
+		);
+	};
+
 	if (!data.length) {
 		return (
 			<div>
@@ -51,13 +61,7 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 				{data.length > 0 && !filteredItems.length > 0 && (
 					<p>There are no matching items.</p>
 				)}
-				{currentUserId === userIdFromPath ? (
-					<p>You own this list.</p>
-				) : (
-					sharedListOwner && (
-						<p>This list belongs to {sharedListOwner.ownerName}.</p>
-					)
-				)}
+				{listOwnerMessage()}
 			</div>
 		);
 	}
@@ -103,13 +107,7 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 			{data.length > 0 && !filteredItems.length > 0 && (
 				<p>There are no matching items.</p>
 			)}
-			{currentUserId === userIdFromPath ? (
-				<p>You own this list.</p>
-			) : (
-				sharedListOwner && (
-					<p>This list belongs to {sharedListOwner.ownerName}.</p>
-				)
-			)}
+			{listOwnerMessage()}
 		</div>
 	);
 }
