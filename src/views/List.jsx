@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ListItem } from '../components';
+import { ListItem, ListOwnerMessage } from '../components';
 import { Link } from 'react-router-dom';
 import { comparePurchaseUrgency } from '../utils/comparePurchaseUrgency';
 import { useAuth, getListOwnerDetails } from '../api';
@@ -37,16 +37,6 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 		})();
 	}, [userIdFromPath, listName]);
 
-	const listOwnerMessage = () => {
-		currentUserId === userIdFromPath ? (
-			<p>You own this list.</p>
-		) : (
-			sharedListOwner && (
-				<p>This list belongs to {sharedListOwner.ownerName}.</p>
-			)
-		);
-	};
-
 	if (!data.length) {
 		return (
 			<div>
@@ -61,7 +51,11 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 				{data.length > 0 && !filteredItems.length > 0 && (
 					<p>There are no matching items.</p>
 				)}
-				{listOwnerMessage()}
+				<ListOwnerMessage
+					currentUserId={currentUserId}
+					userIdFromPath={userIdFromPath}
+					sharedListOwner={sharedListOwner}
+				/>
 			</div>
 		);
 	}
@@ -107,7 +101,11 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 			{data.length > 0 && !filteredItems.length > 0 && (
 				<p>There are no matching items.</p>
 			)}
-			{listOwnerMessage()}
+			<ListOwnerMessage
+				currentUserId={currentUserId}
+				userIdFromPath={userIdFromPath}
+				sharedListOwner={sharedListOwner}
+			/>
 		</div>
 	);
 }
