@@ -22,7 +22,12 @@ export function Home({ data, setListPath, setListName }) {
 		event.preventDefault();
 		const trimmedListName = newlistName.trim();
 		if (trimmedListName) {
-			const listItem = await createList(userId, userEmail, trimmedListName);
+			const listItem = await createList(
+				userId,
+				userEmail,
+				trimmedListName,
+				userName,
+			);
 			setListPath(listItem.path);
 			setNewListName('');
 			navigate('/list');

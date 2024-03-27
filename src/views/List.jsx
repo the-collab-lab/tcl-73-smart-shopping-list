@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ListItem } from '../components';
 import { Link } from 'react-router-dom';
 import { comparePurchaseUrgency } from '../utils/comparePurchaseUrgency';
-import { useAuth } from '../api';
+import { useAuth, getListOwnerDetails } from '../api';
 
 export function List({ listPath, data, listName, userIdFromPath }) {
 	const [searchItem, setSearchItem] = useState('');
+	const [sharedListOwner, setSharedListOwner] = useState(null);
 	const { user } = useAuth();
 	const currentUserId = user?.uid;
 
@@ -18,6 +19,23 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 	});
 
 	const sortedItems = filteredItems.sort(comparePurchaseUrgency);
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const ownerDetails = await getListOwnerDetails(
+					userIdFromPath,
+					listName,
+				);
+				setSharedListOwner(ownerDetails);
+			} catch (error) {
+				console.error(
+					'Error fetching shared list owner details:',
+					error.message,
+				);
+			}
+		})();
+	}, [userIdFromPath, listName]);
 
 	if (!data.length) {
 		return (
@@ -77,8 +95,10 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 			)}
 			{currentUserId === userIdFromPath ? (
 				<p>You own this list.</p>
+			) : sharedListOwner ? (
+				<p>This list belongs to {sharedListOwner.ownerName}.</p>
 			) : (
-				<p>This list has been shared with you.</p>
+				<p>Loading owner details...</p>
 			)}
 		</div>
 	);

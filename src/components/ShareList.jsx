@@ -9,6 +9,7 @@ export function ShareList({ listPath }) {
 	const [isValid, setIsValid] = useState(false);
 	const { user } = useAuth();
 	const currentUserId = user?.uid;
+	console.log('user', user);
 
 	const handleChange = (e) => {
 		setRecipientEmail(e.target.value);

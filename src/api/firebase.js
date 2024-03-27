@@ -31,7 +31,6 @@ export function useShoppingLists(userId, userEmail) {
 	// Start with an empty array for our data.
 	const initialState = [];
 	const [data, setData] = useState(initialState);
-
 	useEffect(() => {
 		// If we don't have a userId or userEmail (the user isn't signed in),
 		// we can't get the user's lists.
@@ -126,11 +125,12 @@ export async function addUserToDatabase(user) {
  *
  * @returns {Promise<Object>} created list object
  */
-export async function createList(userId, userEmail, listName) {
+export async function createList(userId, userEmail, listName, userName) {
 	const listDocRef = doc(db, userId, listName);
 
 	await setDoc(listDocRef, {
-		owner: userId,
+		ownerID: userId,
+		ownerName: userName,
 	});
 
 	const userDocumentRef = doc(db, 'users', userEmail);
@@ -263,5 +263,31 @@ export async function deleteItem(listPath, item) {
 		return { success: true, message: 'Item successfully deleted' };
 	} catch (error) {
 		throw new Error(`Could not delete there was an error: ${error}`);
+	}
+}
+
+export async function getListOwnerDetails(userId, listName) {
+	const listDocRef = doc(db, userId, listName);
+
+	try {
+		// Get the document corresponding to the list
+		const listDoc = await getDoc(listDocRef);
+
+		if (listDoc.exists()) {
+			// Extract ownerId and ownerName from the document
+			const { owner: ownerId, ownerName } = listDoc.data();
+
+			// Return owner details
+			return {
+				ownerId,
+				ownerName,
+			};
+		} else {
+			// Document does not exist
+			throw new Error('List does not exist.');
+		}
+	} catch (error) {
+		console.error('Error fetching list owner details:', error.message);
+		throw error;
 	}
 }
