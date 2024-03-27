@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ListItem, ListOwnerMessage } from '../components';
 import { Link } from 'react-router-dom';
 import { comparePurchaseUrgency } from '../utils/comparePurchaseUrgency';
-import { useAuth, getListOwnerDetails } from '../api';
+import { useAuth } from '../api';
+import { useListOwnerDetails } from '../utils';
 
 export function List({ listPath, data, listName, userIdFromPath }) {
 	const [searchItem, setSearchItem] = useState('');
-	const [sharedListOwner, setSharedListOwner] = useState(null);
 	const { user } = useAuth();
 	const currentUserId = user?.uid;
+	const sharedListOwner = useListOwnerDetails(userIdFromPath, listName);
 
 	const handleChange = (e) => {
 		setSearchItem(e.target.value);
@@ -19,23 +20,6 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 	});
 
 	const sortedItems = filteredItems.sort(comparePurchaseUrgency);
-
-	useEffect(() => {
-		(async () => {
-			try {
-				const ownerDetails = await getListOwnerDetails(
-					userIdFromPath,
-					listName,
-				);
-				setSharedListOwner(ownerDetails);
-			} catch (error) {
-				console.error(
-					'Error fetching shared list owner details:',
-					error.message,
-				);
-			}
-		})();
-	}, [userIdFromPath, listName]);
 
 	if (!data.length) {
 		return (

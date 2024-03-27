@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { getListOwnerDetails } from '../api';
 
 /**
  * Set some state in React, and also persist that value in localStorage.
@@ -18,4 +19,27 @@ export function useStateWithStorage(storageKey, initialValue) {
 	}, [storageKey, value]);
 
 	return [value, setValue];
+}
+
+export function useListOwnerDetails(userIdFromPath, listName) {
+	const [sharedListOwner, setSharedListOwner] = useState(null);
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const ownerDetails = await getListOwnerDetails(
+					userIdFromPath,
+					listName,
+				);
+				setSharedListOwner(ownerDetails);
+			} catch (error) {
+				console.error(
+					'Error fetching shared list owner details:',
+					error.message,
+				);
+			}
+		})();
+	}, [userIdFromPath, listName]);
+
+	return sharedListOwner;
 }
