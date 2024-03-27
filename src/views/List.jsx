@@ -3,13 +3,11 @@ import { ListItem, ListOwnerMessage } from '../components';
 import { Link } from 'react-router-dom';
 import { comparePurchaseUrgency } from '../utils/comparePurchaseUrgency';
 import { useAuth } from '../api';
-import { useListOwnerDetails } from '../utils';
 
 export function List({ listPath, data, listName, userIdFromPath }) {
 	const [searchItem, setSearchItem] = useState('');
 	const { user } = useAuth();
 	const currentUserId = user?.uid;
-	const sharedListOwner = useListOwnerDetails(userIdFromPath, listName);
 
 	const handleChange = (e) => {
 		setSearchItem(e.target.value);
@@ -38,7 +36,7 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 				<ListOwnerMessage
 					currentUserId={currentUserId}
 					userIdFromPath={userIdFromPath}
-					sharedListOwner={sharedListOwner}
+					listName={listName}
 				/>
 			</div>
 		);
@@ -88,7 +86,7 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 			<ListOwnerMessage
 				currentUserId={currentUserId}
 				userIdFromPath={userIdFromPath}
-				sharedListOwner={sharedListOwner}
+				listName={listName}
 			/>
 		</div>
 	);

@@ -1,8 +1,7 @@
-export function ListOwnerMessage({
-	currentUserId,
-	userIdFromPath,
-	sharedListOwner,
-}) {
+import { useListOwnerDetails } from '../utils';
+
+export function ListOwnerMessage({ currentUserId, userIdFromPath, listName }) {
+	const sharedListOwner = useListOwnerDetails(userIdFromPath, listName);
 	console.log('currentUserId', currentUserId);
 	console.log('userIdFromPath', userIdFromPath);
 
