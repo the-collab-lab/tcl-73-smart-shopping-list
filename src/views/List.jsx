@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { ListItem } from '../components';
+import { ListItem, ListOwnerMessage } from '../components';
 import { Link } from 'react-router-dom';
 import { comparePurchaseUrgency } from '../utils/comparePurchaseUrgency';
+import { useAuth } from '../api';
 
-export function List({ listPath, data }) {
+export function List({ listPath, data, listName, userIdFromPath }) {
 	const [searchItem, setSearchItem] = useState('');
+	const { user } = useAuth();
+	const currentUserId = user?.uid;
 
 	const handleChange = (e) => {
 		setSearchItem(e.target.value);
@@ -19,6 +22,7 @@ export function List({ listPath, data }) {
 	if (!data.length) {
 		return (
 			<div>
+				{currentUserId && <p>List name: {listName}</p>}
 				<label htmlFor="add-first-item">
 					There are no items in this list. Click this button to add your first
 					items!
@@ -26,11 +30,22 @@ export function List({ listPath, data }) {
 				<Link id="add-first-item" to="/manage-list">
 					Add items
 				</Link>
+				{data.length > 0 && !filteredItems.length > 0 && (
+					<p>There are no matching items.</p>
+				)}
+				{currentUserId && (
+					<ListOwnerMessage
+						currentUserId={currentUserId}
+						userIdFromPath={userIdFromPath}
+						listName={listName}
+					/>
+				)}
 			</div>
 		);
 	}
 	return (
 		<div>
+			{currentUserId && <p>List name: {listName}</p>}
 			<label htmlFor="item-search"> Search for an item: </label>
 			<input
 				id="item-search"
@@ -69,6 +84,13 @@ export function List({ listPath, data }) {
 			</>
 			{data.length > 0 && !filteredItems.length > 0 && (
 				<p>There are no matching items.</p>
+			)}
+			{currentUserId && (
+				<ListOwnerMessage
+					currentUserId={currentUserId}
+					userIdFromPath={userIdFromPath}
+					listName={listName}
+				/>
 			)}
 		</div>
 	);

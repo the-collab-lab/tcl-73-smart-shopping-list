@@ -31,7 +31,6 @@ export function useShoppingLists(userId, userEmail) {
 	// Start with an empty array for our data.
 	const initialState = [];
 	const [data, setData] = useState(initialState);
-
 	useEffect(() => {
 		// If we don't have a userId or userEmail (the user isn't signed in),
 		// we can't get the user's lists.
@@ -126,11 +125,12 @@ export async function addUserToDatabase(user) {
  *
  * @returns {Promise<Object>} created list object
  */
-export async function createList(userId, userEmail, listName) {
+export async function createList(userId, userEmail, listName, userName) {
 	const listDocRef = doc(db, userId, listName);
 
 	await setDoc(listDocRef, {
-		owner: userId,
+		ownerID: userId,
+		ownerName: userName,
 	});
 
 	const userDocumentRef = doc(db, 'users', userEmail);
@@ -161,7 +161,7 @@ export async function shareList(listPath, currentUserId, recipientEmail) {
 		// If the recipient user doesn't exist, we can't share the list.
 		if (!recipientDoc.exists()) {
 			throw new Error(
-				'Reciepient does not have an account. To share, ask them to sign up on the app.',
+				'Recipient does not have an account. To share, ask them to sign up on the app.',
 			);
 		}
 		// Add the list to the recipient user's sharedLists array.
@@ -263,5 +263,27 @@ export async function deleteItem(listPath, item) {
 		return { success: true, message: 'Item successfully deleted' };
 	} catch (error) {
 		throw new Error(`Could not delete there was an error: ${error}`);
+	}
+}
+
+export async function getListOwnerDetails(userId, listName) {
+	const listDocRef = doc(db, userId, listName);
+
+	try {
+		const listDoc = await getDoc(listDocRef);
+
+		if (listDoc.exists()) {
+			const { owner: ownerId, ownerName } = listDoc.data();
+
+			return {
+				ownerId,
+				ownerName,
+			};
+		} else {
+			throw new Error('List does not exist.');
+		}
+	} catch (error) {
+		console.error('Error fetching list owner details:', error.message);
+		throw error;
 	}
 }
