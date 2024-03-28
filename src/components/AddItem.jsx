@@ -1,9 +1,14 @@
 import { addItem } from '../api/firebase';
 import { useRef } from 'react';
 import { isInputEmpty, isItemDuplicate } from '../utils/itemValidator.js';
+import { SignInAlert } from './SignInAlert.jsx';
+import { useAuth } from '../api/useAuth.jsx';
+import '../custom-styles.css';
+import { Button } from '@radix-ui/themes';
 
 export function AddItem({ listPath, data }) {
 	const formRef = useRef(null);
+	const { user } = useAuth();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -84,7 +89,13 @@ export function AddItem({ listPath, data }) {
 					</li>
 				</ul>
 			</div>
-			<button type="submit">Submit</button>
+			{user ? (
+				<Button className="custom-button" type="submit">
+					Submit
+				</Button>
+			) : (
+				<SignInAlert action={'Submit'} />
+			)}
 		</form>
 	);
 }

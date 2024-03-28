@@ -2,6 +2,8 @@ import { shareList } from '../api/firebase';
 import { useState } from 'react';
 import { useAuth } from '../api';
 import { validateEmail } from '../utils/emailValidator.js';
+import { Button } from '@radix-ui/themes';
+import { SignInAlert } from './SignInAlert.jsx';
 
 export function ShareList({ listPath }) {
 	const [recipientEmail, setRecipientEmail] = useState('');
@@ -58,7 +60,14 @@ export function ShareList({ listPath }) {
 				onChange={handleChange}
 			/>
 			<p>{emailValidator}</p>
-			<button type="submit">Submit</button>
+
+			{user ? (
+				<Button className="custom-button" type="submit">
+					Submit
+				</Button>
+			) : (
+				<SignInAlert action={'Submit'} />
+			)}
 		</form>
 	);
 }

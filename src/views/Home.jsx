@@ -3,6 +3,8 @@ import { SingleList } from '../components/SingleList';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createList } from '../api/firebase.js';
+import { Button } from '@radix-ui/themes';
+import { SignInAlert } from '../components/SignInAlert.jsx';
 import { useAuth } from '../api';
 
 export function Home({ data, setListPath }) {
@@ -46,7 +48,13 @@ export function Home({ data, setListPath }) {
 					onChange={handleInputChange}
 					required
 				/>
-				<button type="submit">Create a list</button>
+				{user ? (
+					<Button className="custom-button" type="submit">
+						Create a list
+					</Button>
+				) : (
+					<SignInAlert action={'Create a list'} />
+				)}
 			</form>
 			<ul>
 				{data.map((item) => (

@@ -1,0 +1,13 @@
+@layer radix_ui, index, utils;
+@import '@radix-ui/themes/styles.css' layer(radix_ui);
+
+@layer utils {
+	/* custom styles for Radix components go here*/
+	button.custom-button {
+		background-color: #87ceeb;
+	}
+
+	button.custom-button:hover {
+		background-color: #71b8d5;
+	}
+}
