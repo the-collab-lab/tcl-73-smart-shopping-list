@@ -50,6 +50,7 @@ export function Home({ data, setListPath }) {
 			</form>
 			{data.length ? (
 				<ul>
+					<p className="list-title">Your Lists</p>
 					{data.map((item) => (
 						<SingleList
 							key={item.path}
@@ -66,12 +67,13 @@ export function Home({ data, setListPath }) {
 					</p>
 				</div>
 			)}
+			{/* <div className="home-links">
 			<a
 				href="https://github.com/the-collab-lab/tcl-73-smart-shopping-list"
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-				<FontAwesomeIcon icon={faSquareGithub} />
+				<FontAwesomeIcon icon={faSquareGithub} className="repo-icon" />
 			</a>
 			<a
 				href="https://the-collab-lab.codes/"
@@ -81,6 +83,7 @@ export function Home({ data, setListPath }) {
 			>
 				<StackedLogo />
 			</a>
+			</div> */}
 		</div>
 	);
 }

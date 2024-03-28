@@ -1,0 +1,21 @@
+.Home {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	position: relative;
+}
+
+.home-links {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	position: fixed;
+	bottom: 3.5em;
+	left: 0;
+	width: 100%;
+	z-index: 1;
+}
+
+.repo-icon {
+	font-size: 4em;
+}
