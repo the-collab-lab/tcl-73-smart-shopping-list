@@ -49,7 +49,9 @@ export function Home({ data, setListPath }) {
 					required
 				/>
 				{user ? (
-					<Button type="submit">Create a list</Button>
+					<Button className="custom-button" type="submit">
+						Create a list
+					</Button>
 				) : (
 					<SignInAlert action={'Create a list'} />
 				)}

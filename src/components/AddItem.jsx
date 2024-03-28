@@ -90,7 +90,9 @@ export function AddItem({ listPath, data }) {
 				</ul>
 			</div>
 			{user ? (
-				<button type="submit">Submit</button>
+				<Button className="custom-button" type="submit">
+					Submit
+				</Button>
 			) : (
 				<SignInAlert action={'Submit'} />
 			)}
