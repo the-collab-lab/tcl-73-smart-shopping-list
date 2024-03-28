@@ -22,7 +22,7 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 	if (!data.length) {
 		return (
 			<div>
-				<p>List name: {listName}</p>
+				{currentUserId && <p>List name: {listName}</p>}
 				<label htmlFor="add-first-item">
 					There are no items in this list. Click this button to add your first
 					items!
@@ -33,17 +33,19 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 				{data.length > 0 && !filteredItems.length > 0 && (
 					<p>There are no matching items.</p>
 				)}
-				<ListOwnerMessage
-					currentUserId={currentUserId}
-					userIdFromPath={userIdFromPath}
-					listName={listName}
-				/>
+				{currentUserId && (
+					<ListOwnerMessage
+						currentUserId={currentUserId}
+						userIdFromPath={userIdFromPath}
+						listName={listName}
+					/>
+				)}
 			</div>
 		);
 	}
 	return (
 		<div>
-			<p>List name: {listName}</p>
+			{currentUserId && <p>List name: {listName}</p>}
 			<label htmlFor="item-search"> Search for an item: </label>
 			<input
 				id="item-search"
@@ -83,11 +85,13 @@ export function List({ listPath, data, listName, userIdFromPath }) {
 			{data.length > 0 && !filteredItems.length > 0 && (
 				<p>There are no matching items.</p>
 			)}
-			<ListOwnerMessage
-				currentUserId={currentUserId}
-				userIdFromPath={userIdFromPath}
-				listName={listName}
-			/>
+			{currentUserId && (
+				<ListOwnerMessage
+					currentUserId={currentUserId}
+					userIdFromPath={userIdFromPath}
+					listName={listName}
+				/>
+			)}
 		</div>
 	);
 }

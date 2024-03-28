@@ -8,14 +8,16 @@ export function ManageList({ listPath, data, listName, userIdFromPath }) {
 
 	return (
 		<div>
-			<p>List Name: {listName}</p>
+			{currentUserId && <p>List Name: {listName}</p>}
 			<AddItem listPath={listPath} data={data} />
 			<ShareList listPath={listPath} />
-			<ListOwnerMessage
-				currentUserId={currentUserId}
-				userIdFromPath={userIdFromPath}
-				listName={listName}
-			/>
+			{currentUserId && (
+				<ListOwnerMessage
+					currentUserId={currentUserId}
+					userIdFromPath={userIdFromPath}
+					listName={listName}
+				/>
+			)}
 		</div>
 	);
 }
